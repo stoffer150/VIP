@@ -1,11 +1,12 @@
 function [best_match, stats] = find_matchings(d1, d2, thres)
     
     stats = {};
+    stats.num_comparisons = 0;
+    stats.num_accepted = 0;
     stats.mean_total = 0;
     stats.mean_accepted = 0;
     stats.num_d1_to_d2 = 0;
     stats.num_d2_to_d1 = 0;
-    stats.num_total = 0;
 
     n_d1 = size(d1, 2);
     n_d2 = size(d2, 2);
@@ -35,6 +36,21 @@ function [best_match, stats] = find_matchings(d1, d2, thres)
     %Filter bad similarities
     
     best_match(:,best_match(3,:) > thres) = [];
+    
+    %Stats
+    
+    
+    stats.num_d1_to_d2 = size(match1(:,match1(3,:) <= thres), 2);
+    
+    stats.num_d2_to_d1 = size(match2(:,match2(3,:) <= thres), 2);
+    
+    stats.mean_total = mean(mean(diff, 3), 2);
+    
+    stats.mean_accepted = mean(best_match(3,:), 2)
+    
+    stats.num_accepted = size(best_match, 2);
+    
+    stats.num_comparisons = n_d1 * n_d2
     
     best_match = best_match(1:2, :);
     
