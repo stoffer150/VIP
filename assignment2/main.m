@@ -25,9 +25,11 @@ end
 n = 5;
 descriptors1 = extract( strcat(in_path, files{1,1}, files{2,1}), points_im1, n );
 descriptors2 = extract( strcat(in_path, files{1,2}, files{2,2}), points_im2, n );
+im1 = imread(strcat(in_path, files{1,1}, files{2,1}));
+im2 = imread(strcat(in_path, files{1,2}, files{2,2}));
 
 % Match interest points
-matches = find_matchings(descriptors1, descriptors2);
+matches = find_matchings(descriptors1, descriptors2,1000);
 p1 = points_im1(matches(1,:),:);
 p2 = points_im2(matches(2,:),:);
 
