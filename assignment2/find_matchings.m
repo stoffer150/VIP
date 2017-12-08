@@ -21,8 +21,6 @@ function [best_match, stats] = find_matchings(d1, d2, thres)
     
     match1 = [1:n_d1; idx; min_diff];
     
-    stats.num_d1_to_d2 = 0;
-    
     %From d2 to d1
     diff = permute(diff, [1 3 2]);
     
