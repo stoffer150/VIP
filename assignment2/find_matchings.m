@@ -1,4 +1,12 @@
-function [best_match] = find_matchings(d1, d2, thres)
+function [best_match, stats] = find_matchings(d1, d2, thres)
+    
+    stats = {};
+    stats.mean_total = 0;
+    stats.mean_accepted = 0;
+    stats.num_d1_to_d2 = 0;
+    stats.num_d2_to_d1 = 0;
+    stats.num_total = 0;
+
     n_d1 = size(d1, 2);
     n_d2 = size(d2, 2);
     
@@ -13,13 +21,14 @@ function [best_match] = find_matchings(d1, d2, thres)
     
     match1 = [1:n_d1; idx; min_diff];
     
-    %From d2 to d1
     
-    diff = sum((d2_tensor - permute(d1_tensor, [1, 3, 2])).^2, 1);
+    
+    %From d2 to d1
+    diff = permute(diff, [1 3 2]);
     
     [min_diff, idx] = min(diff, [], 3);
     
-    match2 = [1:n_d1; idx; min_diff];
+    match2 = [1:n_d2; idx; min_diff];
     
     %Do a two way comparison
     
@@ -30,4 +39,5 @@ function [best_match] = find_matchings(d1, d2, thres)
     best_match(:,best_match(3,:) > thres) = [];
     
     best_match = best_match(1:2, :);
+    
 end
