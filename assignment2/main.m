@@ -37,13 +37,13 @@ for i = 1:length(N)
     im2 = imread(strcat(in_path, files{1,2}, files{2,2}));
 
     % Match interest points
-    matches = find_matchings(descriptors1, descriptors2,100000);
+    [matches,stats] = find_matchings(descriptors1, descriptors2,100000);
     p1 = points_im1(matches(1,:),:);
     p2 = points_im2(matches(2,:),:);
 
     % Plot matched interest points on top of images
     figure;
-    showMatchedFeatures(im1,im2,p1,p2,'montage');
+    showMatchedFeatures(im1,im2,p1,p2,'montage','PlotOptions',{'ro','go','c-'});
     legend('Image 1 points','Image 2 points', 'Location','NorthWest');
 
     % Save plot figure
