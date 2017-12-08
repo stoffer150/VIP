@@ -6,13 +6,14 @@ files =  [{'Img001_diffuse_smallgray'; '.png'}, ...
 
 % PART 1
 count = 1;
+
 for file = files
     I = imread([in_path, file{1}, file{2}]);
-    points = Harris_corner_function(I, 1, 25, 0.01 );
+    varname = 'points_im';
     
-    assignin('base', strcat('points_im', num2str(count)), points);
+    
+    points = Harris_corner_function(I, 1, 25, 0.01 );
 
-    count = count + 1;
     output = place_markers(I, points);
 
     figure();
@@ -21,3 +22,9 @@ for file = files
 end
 
 % PART 2
+%{
+BaseName='MyDataFile_';
+for k=1:10
+FileName=[BaseName,num2str(k)]
+end
+%}
