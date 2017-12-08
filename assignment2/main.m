@@ -8,16 +8,23 @@ files =  [{'Img001_diffuse_smallgray'; '.png'}, ...
 count = 1;
 for file = files
     I = imread([in_path, file{1}, file{2}]);
+    I = double(I);
     points = Harris_corner_function(I, 1, 25, 0.01 );
     
     assignin('base', strcat('points_im', num2str(count)), points);
-
-    count = count + 1;
-    output = place_markers(I, points);
+    %output = place_markers(I, points);
 
     figure();
-    imshow(output);
-    imwrite(output,[out_path, file{1}, file{2}]);
+    imshow(I,[]);
+    hold on
+    plot(points(:,1),points(:,2),'r*');
+    hold off
+    filename = sprintf('interest_points%s',num2str(count));
+    print([out_path, filename], '-dpng');
+    pause(1);
+    close;
+    %imwrite(output,[out_path, file{1}, file{2}]);
+    count = count + 1;
 end
 
 % PART 2
@@ -40,4 +47,4 @@ legend('Image 1 points','Image 2 points', 'Location','SouthEast');
 
 % Save plot figure
 filename = sprintf('matches');
-print(filename, '-dpng');
+print([out_path,filename], '-dpng');
