@@ -21,3 +21,21 @@ for file = files
 end
 
 % PART 2
+
+n = 5;
+descriptors1 = extract( strcat(in_path, files{1,1}, files{2,1}), points_im1, n );
+descriptors2 = extract( strcat(in_path, files{1,2}, files{2,2}), points_im2, n );
+
+% Match interest points
+matches = find_matchings(descriptors1, descriptors2);
+p1 = points_im1(matches(1,:),:);
+p2 = points_im2(matches(2,:),:);
+
+% Plot matched interest points on top of images
+figure;
+showMatchedFeatures(im1,im2,p1,p2,'montage');
+legend('Image 1 points','Image 2 points', 'Location','SouthEast');
+
+% Save plot figure
+filename = sprintf('matches');
+print(filename, '-dpng');
