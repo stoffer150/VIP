@@ -12,7 +12,6 @@ for file = files
     points = Harris_corner_function(I, 1, 25, 0.01 );
     
     assignin('base', strcat('points_im', num2str(count)), points);
-    %output = place_markers(I, points);
 
     figure();
     imshow(I,[]);
@@ -23,7 +22,7 @@ for file = files
     print([out_path, filename], '-dpng');
     pause(1);
     close;
-    %imwrite(output,[out_path, file{1}, file{2}]);
+
     count = count + 1;
 end
 
@@ -48,3 +47,5 @@ legend('Image 1 points','Image 2 points', 'Location','SouthEast');
 % Save plot figure
 filename = sprintf('matches');
 print([out_path,filename], '-dpng');
+pause(1);
+close;
