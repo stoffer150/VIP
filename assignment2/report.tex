@@ -166,7 +166,7 @@
 \newcommand{\hmwkClass}{VIP} % Course/class
 \newcommand{\hmwkClassTime}{|TIME|} % Class/lecture time
 \newcommand{\hmwkClassInstructor}{|INSTRUCTORNAME|} % Teacher/lecturer
-\newcommand{\hmwkAuthorName}{Therese Darum, ...; Cecilie Novak, bqk662; Christoffer Belhage, DZP300} % Your name
+\newcommand{\hmwkAuthorName}{Therese Darum, zbl558; Cecilie Novak, bqk662; Christoffer Belhage, DZP300} % Your name
 
 %----------------------------------------------------------------------------------------
 %	TITLE PAGE
@@ -281,10 +281,12 @@ The rest of the lines are fairly parallel, which is a good sign.
 For the matches produced by descriptor size 9 there are only parallel lines. In the case of descriptor size 13, there is a single tilted line, which again is some edge case.\\
 There seem to be a lot more matches being accepted for "9" and "13".\\
 We will look at what the reason for this is in the statistics section.\\
-Lastly, it seems that only the case of descriptor size 13 managed to \textit{not} match the wrong two "chimney-things" in the top-right.
+Lastly, it seems that only the case of descriptor size 13 managed to \textit{not} match the wrong two "chimney-things" in the top-right.\\
 
 \textbf{Statistics}\\
-
+In table \ref{tab:stats} we see the statistics of our matching. We made 170382 comparisons in total, and we had 389 and 438 interest points in image 1 and 2 respectively. We can see that the first filtering we do reduced the number of possible correspondences significantly. We discard more points for small $N$ because we only have a little neighborhood. The "pattern"\ of the neighborhood is more likely to be seen in other parts of the image, whereas larger neighborhoods are more "complex"\ and thus "rarer".\\
+The number of potential matches is reduces even further when we check that a match from point $y$ to point $x$ is two-sided. Again we see that for the larger $N$ we have more potential matches than for small $N$. This is natural since the more potential matches we have, the higher the chance of them being true matches.\\
+As we theorized the final thresholding does not have a noteworthy effect. The hard threshold we used was 100000. The thresholding seems to have a larger effect on large $N$ and practically none on the smaller. This is because the sum of squared intensity differences of  the smaller window sizes cannot sum up to the threshold, unless the best matching descriptors are still very different, in which case they should have been discarded during the first filtering. Therefore the hard threshold should probably have been chosen based on $N$.
 \begin{table}[H]
 	\centering
 	\begin{tabular}{c||c|c|c|c}
@@ -295,13 +297,15 @@ Lastly, it seems that only the case of descriptor size 13 managed to \textit{not
 		Number of correspondences after filtering, image 2 & 35 & 51 & 59 & 65 \\\hline
 		Number of two-way accepted correspondences& 18 & 23 & 35 & 51 \\ \hline
 		Number of correspondences after thresholding & 18 & 23 & 35 & 50 \\ \hline
-		Average similarity & 1330 & 3891.4 & 9511.1 & 2376 \\ \hline
+		Worst possible dissimilarity between patches & 1625625 & 3186225 & 5267025 & 10989225 \\ \hline
+		Average dissimilarity & 1330 & 3891.4 & 9511.1 & 2376 \\ \hline
 		Standard deviation & 1300.5 & 3753.6 & 8151.8 & 2055.5 \\ \hline
 	\end{tabular}
 	\caption{Statistics of matching}
 	\label{tab:stats}
 \end{table}
-In table \ref{tab:stats} we see the statistics of our matching. We made 170382 comparisons in total
+We would like to have a small average dissimilarity, since small dissimilarity means that two points are a good match. We would also like for the standard deviation to be small, since we would like for all of our matchings to be good. A large standard deviation could mean that we have a few exceptionally good matchings or a few exceptionally bad matchings. From the means and standard deviations we see in table \ref{tab:stats} we can see that we do not get consistently good/bad matches. However the matches we do get seems to be very good, if we take into consideration the worst possible dissimilarity between two patches, calculated by $255^2N^2$. Based on worst case scenario, average dissimilarity, standard deviation and number of accepted matches, it would seem that a very large patch sizes yield the best true case to worst case ratio. This is again because large patches are more difficult to find at other image positions.
+
 \end{homeworkSubProblem}
 
 \end{homeworkProblem}
