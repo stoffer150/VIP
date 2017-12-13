@@ -9,7 +9,7 @@ count = 1;
 for file = files
     I = imread([in_path, file{1}, file{2}]);
     I = double(I);
-    points = Harris_corner_function(I, 1, 25, 0.0001, 0.04);
+    points = Harris_corner_function(I, 1, 25, 0.001, 0.15);
     
     assignin('base', strcat('points_im', num2str(count)), points);
 

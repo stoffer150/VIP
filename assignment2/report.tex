@@ -220,17 +220,40 @@ The threshold used for discarding vague corners has been set as a parameter that
 \begin{homeworkSubProblem}[Experimentation and results]
 We have experimented with the parameter settings for the implemented Harris corner detector, using the following pairs of values:
 \begin{itemize}
-\item t = 0.01, k = 0.04
+\item t = 0.001, k = 0.04
 \item t = 0.0001, k = 0.04
-\item t = 0.000001, k = 0.04
-\item t = 0.01, k = 0.15
+\item t = 0.00001, k = 0.04
+\item t = 0.001, k = 0.15
 \item t = 0.0001, k = 0.15
-\item t = 0.000001, k = 0.15
-\item t = 0.01, k = 0.2
-\item t = 0.0001, k = 0.2
-\item t = 0.000001, k = 0.2
+\item t = 0.00001, k = 0.15
+\item t = 0.001, k = 0.4
+\item t = 0.0001, k = 0.4
+\item t = 0.00001, k = 0.4
 \end{itemize}
-Out of these, we experienced that the value pair giving the best results were $t = 0.0001$, $k = 0.04$. The resulting detection points are shown on top of the images in figure ?-?. In general we experienced that the number of corner points detected goes up, when lowering the threshold variable $t$, while we could not see any visible change when changing the $k$ value (we might not have tried out values from a big enough range, as our experimentation has not been as thourugh as it could be).
+Out of these, we experienced that the value pair giving the best results were $t = 0.001$, $k = 0.15$. The values for $k$ has been chosen based on the recommended values from the slides and the original paper about the detector. The detection points found using the "best" value pair are shown on top of the images in figure \ref{fig:points1}-\ref{fig:points3}. \\\\
+In general we experienced that the number of corner points detected went up, when lowering the threshold variable $t$, while we could only see a slight change in the number of "false" corners when changing the $k$ value. \\\\
+A lot of the detected corners are correctly detected, but there are also a lot of false corners caused by texture patterns such as the roofs, se for example the edge of the light roof approximately in the middle of the images.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{output/interest_points1.png}
+\caption{Interest points detected with the implemented Harris corner detector for image \textit{Img001\_diffuse\_smallgray.png}. Parameters used for the detection was $\sigma = 1$, square kernelsize $sz = 25$, threshold $t = 0.001$ and $k = 0.15$.}
+\label{fig:points1}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{output/interest_points2.png}
+\caption{Interest points detected with the implemented Harris corner detector for image \textit{Img002\_diffuse\_smallgray.png}. Parameters used for the detection was $\sigma = 1$, square kernelsize $sz = 25$, threshold $t = 0.001$ and $k = 0.15$.}
+\label{fig:points2}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{output/interest_points3.png}
+\caption{Interest points detected with the implemented Harris corner detector for image \textit{Img003\_diffuse\_smallgray.png}. Parameters used for the detection was $\sigma = 1$, square kernelsize $sz = 25$, threshold $t = 0.001$ and $k = 0.15$.}
+\label{fig:points3}
+\end{figure}
 
 \end{homeworkSubProblem}
 
@@ -265,12 +288,12 @@ Lastly, as a variable parameter, a hard threshold for how similar the matches sh
 \centering
 \begin{subfigure}[b]{1\textwidth}
 	\includegraphics[width=\textwidth]{output/matches5.png}
-	\caption{Using descriptor field width / height 5}
+	\caption{Matches using a descriptor field of width and height 5.}
 	\label{fig:N5}
 \end{subfigure}\\
 \begin{subfigure}[b]{1\textwidth}
 	\includegraphics[width=\textwidth]{output/matches7.png}
-	\caption{Using descriptor field width / height 7}
+	\caption{Matches using a descriptor field of width and height 7.}
 	\label{fig:N7}
 \end{subfigure}\\
 
@@ -279,41 +302,40 @@ Lastly, as a variable parameter, a hard threshold for how similar the matches sh
 \ContinuedFloat
 \begin{subfigure}[b]{1\textwidth}
 	\includegraphics[width=\textwidth]{output/matches9.png}
-	\caption{Using descriptor field width / height 9}
+	\caption{Matches using a descriptor field of width and height 9.}
 	\label{fig:N9}
 \end{subfigure}\\
 \begin{subfigure}[b]{1\textwidth}
 	\includegraphics[width=\textwidth]{output/matches13.png}
-	\caption{Using descriptor field width / height 13}
+	\caption{Matches using a descriptor field of width and height 13.}
 	\label{fig:N13}
 \end{subfigure}
-\caption{The matches found}
+\caption{Matches found in the used test images. The parameters for the corner detection was as for figure \ref{fig:points1} - \ref{fig:points3}.}
 \label{fig:matches}
 \end{figure}
-Looking at the matches produced for descriptor sizes 5 and 7 in figure \ref{fig:matches}, it seems that many matches have been filtered out. We will be able to see which of our 3 filtering methods caused most of this effect in the statistics section.\\
-In both figure \ref{fig:N5} and \ref{fig:N7}, we see one tilted line. The tilt indicates a wrong matching, which we can also see by visually inspecting the positions of the interest points. It may have something to do with the interest point being more or less on the edge of the image. Also the two matched points do look somewhat similar, seeing as both are placed in an edge of the roof.\\
-The rest of the lines are fairly parallel, which is a good sign, because the lines should be parallel to each other it all the matchings are correct.
-For the matches produced by descriptor size 9 (figure \ref{fig:N9}) there are only parallel lines. In the case of descriptor size 13 (figure \ref{fig:N13}), there is a single tilted line, which again is some edge case.\\
-There seem to be a lot more matches being accepted for "9" and "13". We will look at what the reason for this is in the statistics section below.\\
-Lastly, it seems that only the case of descriptor size 13 managed to \textit{not} match the wrong two "chimney-things" in the top-right.\\
+Looking at the matches produced for descriptor sizes 5 and 7 in figure \ref{fig:matches}, it seems that many matches have been filtered out. We will be able to see which of our 3 filtering methods caused most of this effect in the statistics section.\\\\
+In no of the figures showing the matches, we have seen tilted lines. The tilted lines would have indicated wrong matchings, which we would also have seen by visually inspecting the positions of the interest points. All of the lines are fairly parallel, which is a good sign, because the lines should be parallel to each other, assuming all the matchings are correct.
+\\\\
+Lastly, there seem to be a lot more matches being accepted for when using descriptor fields of size 9 and 13. We will look at what the reason for this is in the statistics section below.\\
 
 \textbf{Statistics}\\
-In table \ref{tab:stats} we see the statistics of our matching. We made 170382 comparisons in total, and we had 389 and 438 interest points in image 1 and 2 respectively. We can see that the first filtering we do reduced the number of possible correspondences significantly. We discard more points for small $N$ because we only have a little neighborhood. The "pattern"\ of the neighborhood is more likely to be seen in other parts of the image, whereas larger neighborhoods are more "complex"\ and thus "rarer".\\
-The number of potential matches is reduces even further when we check that a match from point $y$ to point $x$ is two-sided. Again we see that for the larger $N$ we have more potential matches than for small $N$. This is natural since the more potential matches we have, the higher the chance of them being true matches.\\
+In table \ref{tab:stats} we see the statistics of our matching. We made 176144 comparisons in total, and we had 389 and 438 interest points in image 1 and 2 respectively. We can see that the first filtering we do reduced the number of possible correspondences significantly. \\\\
+We discard more points for small $N$ because we only have a little neighborhood. The "pattern" of the neighborhood is more likely to be seen in other parts of the image, whereas larger neighborhoods are more "complex" and thus "rarer".\\\\
+The number of potential matches is reduced even further, when we check that a match from point $y$ to point $x$ is two-sided. Again we see that for the larger $N$ we have more potential matches than for small $N$. This is natural since the more potential matches we have, the higher the chance of them being true matches.\\\\
 As we theorized the final thresholding does not have a noteworthy effect. The hard threshold we used was 100000. The thresholding seems to have a larger effect on large $N$ and practically none on the smaller. This is because the sum of squared intensity differences of  the smaller window sizes cannot sum up to the threshold, unless the best matching descriptors are still very different, in which case they should have been discarded during the first filtering. Therefore the hard threshold should probably have been chosen based on $N$.
 \begin{table}[H]
 	\centering
 	\begin{tabular}{c||c|c|c|c}
 		N & 5 & 7 & 9 & 13\\ \hline \hline
-		Number of interest points, image 1 & 389 & 389 & 389 & 389 \\ \hline
-		Number of interest points, image 2 & 438 & 438 & 438 & 438 \\ \hline
-		Number of correspondences after filtering, image 1 & 31 & 34 & 46 & 61 \\\hline
-		Number of correspondences after filtering, image 2 & 35 & 51 & 59 & 65 \\\hline
-		Number of two-way accepted correspondences& 18 & 23 & 35 & 51 \\ \hline
-		Number of correspondences after thresholding & 18 & 23 & 35 & 50 \\ \hline
+		Number of interest points, image 1 & 202 & 202 & 202 & 202 \\ \hline
+		Number of interest points, image 2 & 218 & 218 & 218 & 218 \\ \hline
+		Number of correspondences after filtering, image 1 & 26 & 24 & 26 & 34 \\\hline
+		Number of correspondences after filtering, image 2 & 24 & 22 & 26 & 29 \\\hline
+		Number of two-way accepted correspondences& 12 & 13 & 18 & 26 \\ \hline
+		Number of correspondences after thresholding & 12 & 13 & 18 & 26 \\ \hline
 		Worst possible dissimilarity between patches & 1625625 & 3186225 & 5267025 & 10989225 \\ \hline
-		Average dissimilarity & 1330 & 3891.4 & 9511.1 & 2376 \\ \hline
-		Standard deviation & 1300.5 & 3753.6 & 8151.8 & 2055.5 \\ \hline
+		Average dissimilarity & 1877.5 & 5560 & 11256 & 24640 \\ \hline
+		Standard deviation & 1751.1 & 5102 & 9752.7 & 19287 \\ \hline
 	\end{tabular}
 	\caption{Statistics of matching}
 	\label{tab:stats}
