@@ -165,7 +165,7 @@
 \newcommand{\hmwkClass}{VIP} % Course/class
 \newcommand{\hmwkClassTime}{|TIME|} % Class/lecture time
 \newcommand{\hmwkClassInstructor}{|INSTRUCTORNAME|} % Teacher/lecturer
-\newcommand{\hmwkAuthorName}{Therese Darum, ...; Cecilie Novak, ...; Christoffer Belhage, DZP300} % Your name
+\newcommand{\hmwkAuthorName}{Therese Darum, ...; Cecilie Novak, bqk662; Christoffer Belhage, DZP300} % Your name
 
 %----------------------------------------------------------------------------------------
 %	TITLE PAGE
@@ -208,9 +208,12 @@
 \end{homeworkProblem}
 
 \begin{homeworkProblem}[1: Detecting interest points (Features)]
+For the assignment we have chosen to use the Harris corner detector. The implementation has been made by Cecilie for her bachelor's project back in 2016. More precisely, two files with code has been borrowed from this project: \textit{Harris\_corner\_function.m} and \textit{nms.m}.
 
 \begin{homeworkSubProblem}[Implementation]
-...
+The Harris corner detector has been implemented in the file \textit{Harris\_corner\_function.m} using gaussian derivatives for the smoothing of the images, prior to the corner detection. \\\\
+The computation of the Harris corner measures are implemented as in the original paper on the detector (making use of the constant $k = 0.04$). After computing the Harris measures, non-maxima suppression and thresholding is performed on the Harris measures, such that corners are only detected once and vaque corners, which possibly could be other structures than corners, are thrown away. The non-maximal suppression has been implemented separately in the file \textit{nms.m}. \\\\
+The threshold used for discarding vague corners has been set as a parameter that specifies how big a measure must be relatively to the maximal Harris measure in the image (i.e., if the threshold parameter is set to $t = 0.5$, only measures bigger than half the maximal Harris measure in the image is kept). 
 \end{homeworkSubProblem}
 
 \begin{homeworkSubProblem}[Experimentation and results]
