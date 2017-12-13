@@ -166,7 +166,7 @@
 \newcommand{\hmwkClass}{VIP} % Course/class
 \newcommand{\hmwkClassTime}{|TIME|} % Class/lecture time
 \newcommand{\hmwkClassInstructor}{|INSTRUCTORNAME|} % Teacher/lecturer
-\newcommand{\hmwkAuthorName}{Therese Darum, ...; Cecilie Novak, ...; Christoffer Belhage, DZP300} % Your name
+\newcommand{\hmwkAuthorName}{Therese Darum, ...; Cecilie Novak, bqk662; Christoffer Belhage, DZP300} % Your name
 
 %----------------------------------------------------------------------------------------
 %	TITLE PAGE
@@ -209,9 +209,12 @@
 \end{homeworkProblem}
 
 \begin{homeworkProblem}[1: Detecting interest points (Features)]
+For the assignment we have chosen to use the Harris corner detector. The implementation has been made by Cecilie for her bachelor's project back in 2016. More precisely, two files with code has been borrowed from this project: \textit{Harris\_corner\_function.m} and \textit{nms.m}.
 
 \begin{homeworkSubProblem}[Implementation]
-...
+The Harris corner detector has been implemented in the file \textit{Harris\_corner\_function.m} using gaussian derivatives for the smoothing of the images, prior to the corner detection. \\\\
+The computation of the Harris corner measures are implemented as in the original paper on the detector (making use of the constant $k = 0.04$). After computing the Harris measures, non-maxima suppression and thresholding is performed on the Harris measures, such that corners are only detected once and vaque corners, which possibly could be other structures than corners, are thrown away. The non-maximal suppression has been implemented separately in the file \textit{nms.m}. \\\\
+The threshold used for discarding vague corners has been set as a parameter that specifies how big a measure must be relatively to the maximal Harris measure in the image (i.e., if the threshold parameter is set to $t = 0.5$, only measures bigger than half the maximal Harris measure in the image is kept). 
 \end{homeworkSubProblem}
 
 \begin{homeworkSubProblem}[Experimentation and results]
@@ -243,9 +246,42 @@ Lastly, as a variable parameter, a hard threshold for how similar the matches sh
 
 \end{homeworkSubProblem}
 
+\clearpage
 \begin{homeworkSubProblem}[Experimentation and results]
 \textbf{Matchings}\\
-\\
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[b]{1\textwidth}
+	\includegraphics[width=\textwidth]{output/matches5.png}
+	\caption{Using descriptor field width / height 5}
+\end{subfigure}\\
+\begin{subfigure}[b]{1\textwidth}
+	\includegraphics[width=\textwidth]{output/matches7.png}
+	\caption{Using descriptor field width / height 7}
+\end{subfigure}\\
+
+Looking at the matches produced for descriptor sizes 5 and 7, it seems that very many matches have been filtered out. We will be able to see what filter-method caused most of this in the statistics section.\\
+In both mathcing, we see one tilted line. This line is wrong; However, it may have something to do with the interest point being more or less on the edge of the image. Also the two matched points do look somewhat similar, both being placed in an edge of the roof and all.\\
+The rest of the lines are fairly parallel, which is a good sign.
+
+\end{figure}
+\begin{figure}[H]
+\ContinuedFloat
+\begin{subfigure}[b]{1\textwidth}
+	\includegraphics[width=\textwidth]{output/matches9.png}
+	\caption{Using descriptor field width / height 9}
+\end{subfigure}\\
+\begin{subfigure}[b]{1\textwidth}
+	\includegraphics[width=\textwidth]{output/matches13.png}
+	\caption{Using descriptor field width / height 13}
+\end{subfigure}
+\end{figure}
+
+For the matches produced by descriptor size 9 there are only parallel lines. In the case of descriptor size 13, there is a single tilted line, which again is some edge case.\\
+There seem to be a lot more matches being accepted for "9" and "13".\\
+We will look at what the reason for this is in the statistics section.\\
+Lastly, it seems that only the case of descriptor size 13 managed to \textit{not} match the wrong two "chimney-things" in the top-right.
 
 \textbf{Statistics}\\
 
