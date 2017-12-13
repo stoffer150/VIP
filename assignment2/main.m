@@ -43,7 +43,7 @@ for i = 1:length(N)
 
     % Plot matched interest points on top of images
     figure;
-    showMatchedFeatures(im1,im2,p1,p2,'montage','PlotOptions',{'ro','go','c-'});
+    showMatchedFeatures(im1,im2,p1,p2,'montage');
     legend('Image 1 points','Image 2 points', 'Location','NorthWest');
 
     % Save plot figure
