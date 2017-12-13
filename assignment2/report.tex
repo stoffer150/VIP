@@ -38,6 +38,7 @@
 \usepackage{amssymb}
 \usepackage{textcomp}
 \usepackage{subcaption}
+\usepackage{multirow}
 
 
 % Margins
@@ -228,16 +229,17 @@
 \begin{homeworkSubProblem}[Implementation]
 
 \textbf{Extracting points}\\
-For each detected point of interest we must extract information to be used as a descriptor. The most simple extraction is placing a square $N\times N$ window centered over the detected pixel and using every pixel within the window as a descriptor. We pad the image with $N$ zeros, in case we wish to extract a descriptor from a pixel less than $\lfloor \frac{N}{2}\rfloor$ pixels from the border. Then for every extracted image patch we reshape it into a $N\cdot N$ vector. Every vector is then collected and placed into a matrix.
+For each detected point of interest we must extract information to be used as a descriptor. The most simple extraction is placing a square $N\times N$ window centered over the detected pixel and using every pixel within the window as a descriptor. We pad the image with $N$ zeros, in case we wish to extract a descriptor from a pixel less than $\lfloor \frac{N}{2}\rfloor$ pixels from the border. Then for every extracted image patch we reshape it into a $N\cdot N$ vector. Every vector is then collected and placed into a matrix.\\
 
 \textbf{Matching}\\
-The matching was performed by calculating the difference between all the descriptors across the two images, using sum of squared differences.\\
-Then for each descriptor in the first image, the descriptor from the second image with the smallest difference is logged as the "match"\\
-Just doing this produced a lot of unwanted matches, so we needed to filter the matches. Besides, multiple descriptors might match a single descriptor from the second image, which naturally does not make sense.\\
-The first filter applied is checking whether the second best match for any given descriptor is within some scale of the same difference to the best match. So, if the second best match is not far worse than the best match, then we consider the matches too ambiguous and discard it entirely.\\
+The matching was performed by calculating the difference between all the descriptors across the two images, using sum of squared intensity difference:
+$$SSID(u,v) = \sum_{i=1}^{n}(u_i-v_i)^2$$
+Then for each descriptor in the first image, the descriptor from the second image with the smallest difference is logged as the "match".\\
+Just doing this produced a lot of unwanted matches, so we needed to filter the matches. Besides, multiple descriptors from the first image might match a single descriptor from the second image, which naturally does not make sense.\\
+The first filtering applied is checking whether the second best match for any given descriptor is within some scale of the same difference to the best match. So, if the second best match is not far worse than the best match, then we consider the matches too ambiguous and discard it entirely.\\
 This reduced the number of matches, depending on what scale was used to determine "too ambigous".\\
 The next filter added is doing the exact same as described above, but for all descriptors in the second imaged compared to the descriptors in the first image. If a descriptor from the first image points to a descriptor from the second image, which in turn points to the same descriptor in the first image, then it is kept as a match, else discarded. That it, descriptors must match two-way.\\
-Lastly, as a variable parameter, a hard threshold for how similar the matches should be before we keep them. This might be a less useful filter than the previous two; The statistics will show whether his is the case.
+Lastly, as a variable parameter, a hard threshold for how similar the matches should be before we keep them. This might be a less useful filter than the previous two; The statistics will show whether this is the case.
 
 \end{homeworkSubProblem}
 
@@ -246,10 +248,24 @@ Lastly, as a variable parameter, a hard threshold for how similar the matches sh
 \\
 
 \textbf{Statistics}\\
-\begin{tabular}{c||c|c|c|c}
-N & 5 & 7 & 9 & 13\\ \hline \hline
-Number of comparisons & & & &
-\end{tabular}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{c||c|c|c|c}
+		N & 5 & 7 & 9 & 13\\ \hline \hline
+		Number of interest points, image 1 & 389 & 389 & 389 & 389 \\ \hline
+		Number of interest points, image 2 & 438 & 438 & 438 & 438 \\ \hline
+		Number of correspondences after filtering, image 1 & 31 & 34 & 46 & 61 \\\hline
+		Number of correspondences after filtering, image 2 & 35 & 51 & 59 & 65 \\\hline
+		Number of two-way accepted correspondences& 18 & 23 & 35 & 51 \\ \hline
+		Number of correspondences after thresholding & 18 & 23 & 35 & 50 \\ \hline
+		Average similarity & 1330 & 3891.4 & 9511.1 & 2376 \\ \hline
+		Standard deviation & 1300.5 & 3753.6 & 8151.8 & 2055.5 \\ \hline
+	\end{tabular}
+	\caption{Statistics of matching}
+	\label{tab:stats}
+\end{table}
+In table \ref{tab:stats} we see the statistics of our matching. We made 170382 comparisons in total
 \end{homeworkSubProblem}
 
 \end{homeworkProblem}
