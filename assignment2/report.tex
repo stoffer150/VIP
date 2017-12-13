@@ -255,15 +255,13 @@ Lastly, as a variable parameter, a hard threshold for how similar the matches sh
 \begin{subfigure}[b]{1\textwidth}
 	\includegraphics[width=\textwidth]{output/matches5.png}
 	\caption{Using descriptor field width / height 5}
+	\label{fig:N5}
 \end{subfigure}\\
 \begin{subfigure}[b]{1\textwidth}
 	\includegraphics[width=\textwidth]{output/matches7.png}
 	\caption{Using descriptor field width / height 7}
+	\label{fig:N7}
 \end{subfigure}\\
-
-Looking at the matches produced for descriptor sizes 5 and 7, it seems that very many matches have been filtered out. We will be able to see what filter-method caused most of this in the statistics section.\\
-In both mathcing, we see one tilted line. This line is wrong; However, it may have something to do with the interest point being more or less on the edge of the image. Also the two matched points do look somewhat similar, both being placed in an edge of the roof and all.\\
-The rest of the lines are fairly parallel, which is a good sign.
 
 \end{figure}
 \begin{figure}[H]
@@ -271,16 +269,21 @@ The rest of the lines are fairly parallel, which is a good sign.
 \begin{subfigure}[b]{1\textwidth}
 	\includegraphics[width=\textwidth]{output/matches9.png}
 	\caption{Using descriptor field width / height 9}
+	\label{fig:N9}
 \end{subfigure}\\
 \begin{subfigure}[b]{1\textwidth}
 	\includegraphics[width=\textwidth]{output/matches13.png}
 	\caption{Using descriptor field width / height 13}
+	\label{fig:N13}
 \end{subfigure}
+\caption{The matches found}
+\label{fig:matches}
 \end{figure}
-
-For the matches produced by descriptor size 9 there are only parallel lines. In the case of descriptor size 13, there is a single tilted line, which again is some edge case.\\
-There seem to be a lot more matches being accepted for "9" and "13".\\
-We will look at what the reason for this is in the statistics section.\\
+Looking at the matches produced for descriptor sizes 5 and 7 in figure \ref{fig:matches}, it seems that many matches have been filtered out. We will be able to see which of our 3 filtering methods caused most of this effect in the statistics section.\\
+In both figure \ref{fig:N5} and \ref{fig:N7}, we see one tilted line. The tilt indicates a wrong matching, which we can also see by visually inspecting the positions of the interest points. It may have something to do with the interest point being more or less on the edge of the image. Also the two matched points do look somewhat similar, seeing as both are placed in an edge of the roof.\\
+The rest of the lines are fairly parallel, which is a good sign, because the lines should be parallel to each other it all the matchings are correct.
+For the matches produced by descriptor size 9 (figure \ref{fig:N9}) there are only parallel lines. In the case of descriptor size 13 (figure \ref{fig:N13}), there is a single tilted line, which again is some edge case.\\
+There seem to be a lot more matches being accepted for "9" and "13". We will look at what the reason for this is in the statistics section below.\\
 Lastly, it seems that only the case of descriptor size 13 managed to \textit{not} match the wrong two "chimney-things" in the top-right.\\
 
 \textbf{Statistics}\\
