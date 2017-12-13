@@ -1,4 +1,4 @@
-function [ corners ] = Harris_corner_function( im, sigma, sz, t )
+function [ corners ] = Harris_corner_function( im, sigma, sz, t, k )
 % Computes Harris Corner, takes grayscale image im, scale sigma, kernelsize sz and 
 % threshold t as arguments
 
@@ -20,7 +20,7 @@ function [ corners ] = Harris_corner_function( im, sigma, sz, t )
 
     % Create Harris' corner measures for each pixel, 
     % k is set to 0.04 as standard
-    k = 0.04;
+    %k = 0.04;
     cim_matrix = ((Mx2 .* My2 - Mxy.^2) - k * (Mx2 + My2).^2).^2;
     cim_matrix = cim_matrix.^2;
 

@@ -204,12 +204,12 @@
 %----------------------------------------------------------------------------------------
 %	PROBLEM 1
 %----------------------------------------------------------------------------------------
-\begin{homeworkProblem}[Quick Intro]
-...
+\begin{homeworkProblem}[Programming language and used libraries]
+For this assignment \texttt{Matlab} and its \texttt{Image processing toolbox} have been used. Throughout the assignment code snippets and parts of functions have been reused. We have only reused code that we have written by ourselves.
 \end{homeworkProblem}
 
 \begin{homeworkProblem}[1: Detecting interest points (Features)]
-For the assignment we have chosen to use the Harris corner detector. The implementation has been made by Cecilie for her bachelor's project back in 2016. More precisely, two files with code has been borrowed from this project: \textit{Harris\_corner\_function.m} and \textit{nms.m}.
+For the assignment we have chosen to use the Harris corner detector. The implementation has been made by Cecilie for her bachelor's project back in 2016. More precisely, two files with code has been borrowed from the bachelor project: \textit{Harris\_corner\_function.m} and \textit{nms.m}.
 
 \begin{homeworkSubProblem}[Implementation]
 The Harris corner detector has been implemented in the file \textit{Harris\_corner\_function.m} using gaussian derivatives for the smoothing of the images, prior to the corner detection. \\\\
@@ -218,7 +218,20 @@ The threshold used for discarding vague corners has been set as a parameter that
 \end{homeworkSubProblem}
 
 \begin{homeworkSubProblem}[Experimentation and results]
-...
+We have experimented with the parameter settings for the implemented Harris corner detector, using the following pairs of values:
+\begin{itemize}
+\item t = 0.01, k = 0.04
+\item t = 0.0001, k = 0.04
+\item t = 0.000001, k = 0.04
+\item t = 0.01, k = 0.15
+\item t = 0.0001, k = 0.15
+\item t = 0.000001, k = 0.15
+\item t = 0.01, k = 0.2
+\item t = 0.0001, k = 0.2
+\item t = 0.000001, k = 0.2
+\end{itemize}
+Out of these, we experienced that the value pair giving the best results were $t = 0.0001$, $k = 0.04$. The resulting detection points are shown on top of the images in figure ?-?. In general we experienced that the number of corner points detected goes up, when lowering the threshold variable $t$, while we could not see any visible change when changing the $k$ value (we might not have tried out values from a big enough range, as our experimentation has not been as thourugh as it could be).
+
 \end{homeworkSubProblem}
 
 \end{homeworkProblem}
@@ -237,11 +250,9 @@ For each detected point of interest we must extract information to be used as a 
 \textbf{Matching}\\
 The matching was performed by calculating the difference between all the descriptors across the two images, using sum of squared intensity difference:
 $$SSID(u,v) = \sum_{i=1}^{n}(u_i-v_i)^2$$
-Then for each descriptor in the first image, the descriptor from the second image with the smallest difference is logged as the "match".\\
-Just doing this produced a lot of unwanted matches, so we needed to filter the matches. Besides, multiple descriptors from the first image might match a single descriptor from the second image, which naturally does not make sense.\\
-The first filtering applied is checking whether the second best match for any given descriptor is within some scale of the same difference to the best match. So, if the second best match is not far worse than the best match, then we consider the matches too ambiguous and discard it entirely.\\
-This reduced the number of matches, depending on what scale was used to determine "too ambigous".\\
-The next filter added is doing the exact same as described above, but for all descriptors in the second imaged compared to the descriptors in the first image. If a descriptor from the first image points to a descriptor from the second image, which in turn points to the same descriptor in the first image, then it is kept as a match, else discarded. That it, descriptors must match two-way.\\
+Then for each descriptor in the first image, the descriptor from the second image with the smallest difference is logged as the "match". Just doing this produced a lot of unwanted matches, so we needed to filter the matches. Besides, multiple descriptors from the first image might match a single descriptor from the second image, which naturally does not make sense.\\\\
+The first filtering applied is checking whether the second best match for any given descriptor is within some scale of the same difference to the best match. So, if the second best match is not far worse than the best match, then we consider the matches too ambiguous and discard it entirely.This reduced the number of matches, depending on what scale was used to determine "too ambigous".\\\\
+The next filter added is doing the exact same as described above, but for all descriptors in the second image compared to the descriptors in the first image. If a descriptor from the first image points to a descriptor from the second image, which in turn points to the same descriptor in the first image, then it is kept as a match, else discarded. That it, descriptors must match two-way.\\\\
 Lastly, as a variable parameter, a hard threshold for how similar the matches should be before we keep them. This might be a less useful filter than the previous two; The statistics will show whether this is the case.
 
 \end{homeworkSubProblem}
