@@ -17,11 +17,11 @@ function disp = calc_disp(im1,im2,s,pre_disp)
         for j = v_pad + 1:v_pad+col
             d = pre_disp(i - h_pad,j - v_pad);
             temp = im1(i-h_pad : i+h_pad,j-v_pad :j+v_pad);
-            A = im2(i-h_pad :i+h_pad,j+d-v_pad :end);
+            A = im2(i-h_pad :i+h_pad,:);
             corr = normxcorr2(temp,A);
             c_sz = size(corr);
             max_ind = find(corr(ceil(c_sz(1)/2),:) == max(corr(ceil(c_sz(1)/2),:)));
-            disp(i - h_pad,j - v_pad) = -(j - max_ind(1)) + d;
+            disp(i - h_pad,j - v_pad) = max_ind(1) - j - h_pad + d;
         end
     end
     
