@@ -1,12 +1,16 @@
 close all
 clear
 
-first_im = imread('tsukuba/scene1.row3.col1.ppm');
-second_im = imread('tsukuba/scene1.row3.col2.ppm');
+first_im = double(rgb2gray(imread('tsukuba/scene1.row3.col1.ppm')));
+second_im = double(rgb2gray(imread('tsukuba/scene1.row3.col2.ppm')));
 
-size = min(size(first_im, 1), size(second_im, 2));
+noise = 0.01*rand(size(first_im));
+first_im = first_im + noise;
+second_im = second_im + noise;
 
-num_scales = floor(log2(size));
+imsize = min(size(first_im, 1), size(second_im, 2));
+
+num_scales = floor(log2(imsize));
 
 num_scales = min(4, num_scales);
 
@@ -30,9 +34,28 @@ for level = num_scales:-1:1
     
     if level < num_scales
         disparities{level} = ...
-            calc_disp(im1, im2, [5, 5], disparities{level+1})
+            calc_disp(im1, im2, [5, 5], imresize(disparities{level+1}, 2, 'nearest'));
     else
         disparities{level} = ...
-            calc_disp(im1, im2, [5, 5])
+            calc_disp(im1, im2, [5, 5]);
     end
 end
+
+gt_disp = imread('tsukuba/truedisp.row3.col3.pgm');
+
+
+disparity = disparities{1};
+disparity = disparity - min(disparity);
+disparity = uint8(disparity ./ max(disparity) * 255);
+err = abs((disparity - gt_disp));
+err = err(:);
+
+mean_err = mean(err);
+
+err_std = std(double(err));
+
+num_large_errs = size(err(err >= 3), 1);
+
+frac_large_errs = num_large_errs / size(err, 1);
+
+
