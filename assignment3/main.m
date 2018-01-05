@@ -44,9 +44,14 @@ end
 gt_disp = imread('tsukuba/truedisp.row3.col3.pgm');
 
 disp('Calculating statistics...')
-disparity = disparities{1,1};
-disparity = disparity - min(disparity);
-disparity = double(disparity) ./ double(max(disparity(:)));
+for n = num_scales:-1:1
+    disparity = disparities{n, 1};
+    disparity = disparity - min(disparity(:));
+    disparity = uint8(double(disparity) ./ double(max(disparity(:))) * 255);
+    imwrite(disparity, ['disparity', int2str(n), '.png']);
+    figure();
+    imshow(disparity);
+end
 err = abs((disparities{1,1} - gt_disp));
 err = err(:);
 
