@@ -225,11 +225,122 @@
 
 \begin{homeworkProblem}[Testing and results]
 
-\begin{homeworkSubProblem}[]
-
+\begin{homeworkSubProblem}[Methods]
+We spent a lot of time debuggin our code; The most effective ways that we tested our implementation was by using small fragments of pictures and then shifting it a couple of pixels. That way we knew what the expected result should be, and could verify it.\\
+Once we had working code, we used the sample images to optimize our methods to get better results. Some of these optmizations included tweaking the search area for the cross correlation, and discarding the parts of the search area on the right side of the kernel/template.\\
+\\
+When we had implemented our optimizations we performed a parameter test; That is, varying the kernel/template size, and the number of scales used. The results are shown in the next section.
 \end{homeworkSubProblem}
 
-\begin{homeworkSubProblem}[]
+\begin{homeworkSubProblem}[Results]
+\begin{figure}[H]
+\centering
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity_s1_k5.png}
+	\caption{Kernel size = 5, 1 scale}
+\end{subfigure}
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity_s1_k7.png}
+	\caption{Kernel size = 7, 1 scale}
+\end{subfigure}
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity_s1_k9.png}
+	\caption{Kernel size = 9, 1 scale}
+\end{subfigure}
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity_s1_k11.png}
+	\caption{Kernel size = 11, 1 scale}
+\end{subfigure}
+\end{figure}
+\begin{figure}[H]
+\ContinuedFloat
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity_s2_k5.png}
+	\caption{Kernel size = 5, 2 scales}
+\end{subfigure}
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity_s2_k7.png}
+	\caption{Kernel size = 7, 2 scales}
+\end{subfigure}
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity_s2_k9.png}
+	\caption{Kernel size = 9, 2 scales}
+\end{subfigure}
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity_s2_k11.png}
+	\caption{Kernel size = 11, 2 scales}
+\end{subfigure}
+\end{figure}
+\begin{figure}[H]
+\ContinuedFloat
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity_s3_k5.png}
+	\caption{Kernel size = 5, 3 scales}
+\end{subfigure}
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity_s3_k7.png}
+	\caption{Kernel size = 7, 3 scales}
+\end{subfigure}
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity_s3_k9.png}
+	\caption{Kernel size = 9, 3 scales}
+\end{subfigure}
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity_s3_k11.png}
+	\caption{Kernel size = 11, 3 scales}
+\end{subfigure}
+\end{figure}
+\begin{figure}[H]
+\ContinuedFloat
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity_s4_k5.png}
+	\caption{Kernel size = 5, 4 scales}
+\end{subfigure}
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity_s4_k7.png}
+	\caption{Kernel size = 7, 4 scales}
+\end{subfigure}
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity_s4_k9.png}
+	\caption{Kernel size = 9, 4 scales}
+\end{subfigure}
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity_s4_k11.png}
+	\caption{Kernel size = 11, 4 scales}
+\end{subfigure}
+\caption{Disparities calculated by varying number of scale-spaces and kernel size.}
+\label{fig:disparities}
+\end{figure}
+
+There are a few things to take away from this: Kernel-size means a lot for the quality of the result. With the lower size kernels, there are a lot of "holes". This could be due to the search area being scaled according to the kernel-size; A deliberate choice, but i retrospect it may have been better to choose a fixed search area size across all kernels. The reason being that smaller kernels may result in such a narrow search area that the true match is outside of the search area and thus not able to be matched.\\
+But then one would expect that any additional scale space would "fix" that issue - However this does not seem to be the case when looking at the difference between kernel size 5 with scales levels 3 and 4. There is only a slight difference and that is the on the lamp. It makes sense that there would be a difference there, as it is the part of the image that chages the most.\\
+It is pretty obvoius when looking at the lower level disparities:
+\begin{figure}[H]
+\centering
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity1.png}
+	\caption{Scale level 1}
+\end{subfigure}
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity2.png}
+	\caption{Scale level 2}
+\end{subfigure}
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity3.png}
+	\caption{Scale level 3}
+\end{subfigure}
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity4.png}
+	\caption{Scale level 4}
+\end{subfigure}
+\caption{The disparity of different scales (using kernel size 7). Higher resolution scales are based on lower ones.}
+\end{figure}
+While this is for kernel size 7, and not 5, it still shows why adding the last scale added quality to the lamp area.
+But why the rest of the image (for kernel size 5) is still not filled out is puzzling.\\
+\\
+Another fact we see from the tests is that larger kernels improve quality (probably with diminishing returns); However, increased kernel size also means more computation - Especially in our implementation where search area scales with kernel size and because of our use of \texttt{normxcorr2}.\\
+\\
+Lastly, adding a level of scale only add benefits to a certain level; In most cases we see little to no improvement in quality when adding the fourth scale. Maybe with an even smaller search area, extra scale levels would make sense, but they are already fairly small.
 
 \end{homeworkSubProblem}
 
