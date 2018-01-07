@@ -9,7 +9,7 @@ function dispa = calc_disp(im1,im2,s,pre_disp)
     v_pad = floor(s(2)/2);
     
     for i = 1:row
-        disp(int2str(i))
+        %disp(int2str(i))
         for j = 1:col
 
             d = uint64(pre_disp(i,j));
