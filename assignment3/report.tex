@@ -213,7 +213,12 @@
 
 \end{homeworkSubProblem}
 
-\begin{homeworkSubProblem}[]
+\begin{homeworkSubProblem}[The code]
+We used a few built-in methods for essential parts of the program. First up, we used Matlab's \texttt{impyramid} in order to make the different scales. This function applies a slight blur (something like a Gaussian blur) and downsizes the image to half height and width.\\
+Secondly, we used Matlab's \texttt{normxcorr2} for calculating the normalized cross correlation between a kernel/template and a horizontal fragment of the target image. Unfortunately, this was an unwise decision, as it also calculates all horizontal correlations (i.e. having the kernel partially above or below the center line of the search area). This uses up a large, and completely unnecessary, amount of computer power.\\
+Ignoring that, our program works by taking any pre-calculated disparities (from lower scale levels), and using corresponding disparity for a given pixel to determine where to center the search area. Once a search area is chosen, we use the correlation function to determine at which pixel on the same horizontal axis there is a best match with a patch around the original pixel location.\\
+The difference between the original location and the best match is then recorded as the disparity for that pixel. Note that we do not accept negative disparities, as the scene should only be moving in one direction.\\
+The cross-correlation function also compares the patch with the search area such that the patch only partially overlaps with the search area (at the edges). We have chosen to ignore such comparisons, as they may have a very high correlation, but are obviously wrong (according to our tests). Therefore the disparities near the left edge of the image are all zero; Which also makes some sense, as we in truth do not know what would lie outside of the image.
 
 \end{homeworkSubProblem}
 
