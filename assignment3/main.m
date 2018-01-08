@@ -54,6 +54,7 @@ for s = 1:num_scales
 end
 
 gt_disp = imread('tsukuba/truedisp.row3.col3.pgm');
+gt_disp = imadjust(gt_disp);
 
 disp('Calculating statistics...')
 for n = num_scales:-1:1
@@ -64,15 +65,26 @@ for n = num_scales:-1:1
     figure();
     imshow(disparity);
 end
-err = abs((disparities{num_scales, 2,1} - gt_disp));
-err = err(:);
+%%
+disp('Calculating...')
+for k = 5:2:11
+    for s = 1:4
+        dispar = double(imadjust(disparities{s, (k-5) / 2 + 1,1}));
+        disp(strcat('k = ',num2str(k), ', scales used = ',num2str(s)))
+        err = abs(double(gt_disp) - dispar);
+        %imwrite(err, ['err_s', int2str(s), '_k', int2str(k), '.png']);
+        err = err(:);
 
-mean_err = mean(err);
+        mean_err = mean(err);
+        disp(strcat('Mean error: ', num2str(mean_err)))
 
-err_std = std(double(err));
+        err_std = std(double(err));
+        disp(strcat('Standard deviation: ', num2str(err_std)))
 
-num_large_errs = size(err(err >= 3), 1);
+        num_large_errs = size(err(err >= 3), 1);
+        disp(strcat('Number of large errors: ', num2str(num_large_errs)))
 
-frac_large_errs = num_large_errs / size(err, 1);
-
-
+        frac_large_errs = num_large_errs / size(err, 1);
+        disp(strcat('Faction of large errors: ', num2str(frac_large_errs)))
+    end
+end

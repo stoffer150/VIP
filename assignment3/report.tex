@@ -226,7 +226,7 @@
 \begin{homeworkProblem}[Testing and results]
 
 \begin{homeworkSubProblem}[Methods]
-We spent a lot of time debuggin our code; The most effective ways that we tested our implementation was by using small fragments of pictures and then shifting it a couple of pixels. That way we knew what the expected result should be, and could verify it.\\
+We spent a lot of time debugging our code; The most effective ways that we tested our implementation was by using small fragments of pictures and then shifting it a couple of pixels. That way we knew what the expected result should be, and could verify it.\\
 Once we had working code, we used the sample images to optimize our methods to get better results. Some of these optmizations included tweaking the search area for the cross correlation, and discarding the parts of the search area on the right side of the kernel/template.\\
 \\
 When we had implemented our optimizations we performed a parameter test; That is, varying the kernel/template size, and the number of scales used. The results are shown in the next section.
@@ -312,9 +312,9 @@ When we had implemented our optimizations we performed a parameter test; That is
 \label{fig:disparities}
 \end{figure}
 
-There are a few things to take away from this: Kernel-size means a lot for the quality of the result. With the lower size kernels, there are a lot of "holes". This could be due to the search area being scaled according to the kernel-size; A deliberate choice, but i retrospect it may have been better to choose a fixed search area size across all kernels. The reason being that smaller kernels may result in such a narrow search area that the true match is outside of the search area and thus not able to be matched.\\
+In figure \ref{fig:disparities} we see the resulting disparity images for different number of scale levels and kernel sizes. There are a few things to take away from this: Kernel-size means a lot for the quality of the result. With the lower size kernels, there are a lot of "holes". This could be due to the search area being scaled according to the kernel-size; A deliberate choice, but i retrospect it may have been better to choose a fixed search area size across all kernels. The reason being that smaller kernels may result in such a narrow search area that the true match is outside of the search area and thus not able to be matched.\\
 But then one would expect that any additional scale space would "fix" that issue - However this does not seem to be the case when looking at the difference between kernel size 5 with scales levels 3 and 4. There is only a slight difference and that is the on the lamp. It makes sense that there would be a difference there, as it is the part of the image that chages the most.\\
-It is pretty obvoius when looking at the lower level disparities:
+It is pretty obvoius when looking at the lower level disparities in figure \ref{fig:lowlevel}:
 \begin{figure}[H]
 \centering
 \begin{subfigure}[b]{0.24\textwidth}
@@ -334,13 +334,97 @@ It is pretty obvoius when looking at the lower level disparities:
 	\caption{Scale level 4}
 \end{subfigure}
 \caption{The disparity of different scales (using kernel size 7). Higher resolution scales are based on lower ones.}
+\label{fig:lowlevel}
 \end{figure}
-While this is for kernel size 7, and not 5, it still shows why adding the last scale added quality to the lamp area.
+While the disparity images in figure \ref{fig:lowlevel} are for kernel size 7, and not 5, it still shows why adding the last scale added quality to the lamp area.
 But why the rest of the image (for kernel size 5) is still not filled out is puzzling.\\
 \\
 Another fact we see from the tests is that larger kernels improve quality (probably with diminishing returns); However, increased kernel size also means more computation - Especially in our implementation where search area scales with kernel size and because of our use of \texttt{normxcorr2}.\\
 \\
 Lastly, adding a level of scale only add benefits to a certain level; In most cases we see little to no improvement in quality when adding the fourth scale. Maybe with an even smaller search area, extra scale levels would make sense, but they are already fairly small.
+
+\begin{table}[H]
+	\centering
+	\begin{subtable}{1\textwidth}
+		\centering
+		\begin{tabular}{c||c|c|c|c}
+			Kernel size &5&7&9&11\\\hline
+			Mean error &91.676&97.717&115.279&111.623\\\hline
+			Standard deviation &65.013&68.073&60.596&56.912\\\hline
+			\# large errors &94909&100633&102920&103469\\\hline
+			Fraction of large errors &0.858&0.910&0.931&0.936\\\hline
+		\end{tabular}
+		\caption{Calculated with 1 scale level}
+	\end{subtable}
+	\begin{subtable}{1\textwidth}
+		\centering
+		\begin{tabular}{c||c|c|c|c}
+			Kernel size &5&7&9&11\\\hline
+			Mean error &74.837&56.363&44.580&39.742\\\hline
+			Standard deviation &52.439&48.593&45.825&48.161\\\hline
+			\# large errors &99558&104528&105233&105104\\\hline
+			Fraction of large errors &0.900&0.945&0.952&0.950\\\hline
+		\end{tabular}
+		\caption{Calculated with 2 scale levels}
+	\end{subtable}
+	\begin{subtable}{1\textwidth}
+		\centering
+		\begin{tabular}{c||c|c|c|c}
+			Kernel size &5&7&9&11\\\hline
+			Mean error &48.247&36.777&36.308&35.465\\\hline
+			Standard deviation &47.984&46.246&47.266&47.107\\\hline
+			\# large errors &102891&72908&70614&68582\\\hline
+			Fraction of large errors &0.930&0.659&0.639&0.620\\\hline
+		\end{tabular}
+		\caption{Calculated with 3 scale levels}
+	\end{subtable}
+	\begin{subtable}{1\textwidth}
+		\centering
+		\begin{tabular}{c||c|c|c|c}
+			Kernel size &5&7&9&11\\\hline
+			Mean error &44.388&36.760&36.315&35.468\\\hline
+			Standard deviation &43.555&46.222&47.271&47.106\\\hline
+			\# large errors &92788&72893&70616&68591\\\hline
+			Fraction of large errors &0.839&0.659&0.639&0.620\\\hline
+		\end{tabular}
+		\caption{Calculated with 4 scale levels}
+	\end{subtable}
+	\caption{Numerical evaluation of results}
+	\label{tab:numeval}
+\end{table}
+In table \ref{tab:numeval} we see a numerical evaluation of our results, for varying number of scale levels and kernel sizes.
+
+ 
+From the tables we can see that for all number of scale levels the mean error goes down when the kernel size goes up. This is sound since small patches are more likely to match many places in the image, because of the simple structure. Larger patches have a more complex structure, and thus are more difficult to match. Number of scale levels also seem to have a great impact on mean error.
+
+The standard deviation of the error does not seem to depend greatly on the kernel size, but still there is a slight tendency for the standard deviation to become smaller when the number of scales goes up.
+
+For few scale levels we seem to get fewer large errors when the kernel size is small, but as soon as we have more than 2 levels we also need larger kernels. 
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}[b]{0.5\textwidth}
+		\centering
+		\includegraphics[width=7cm]{errk5.png}
+		\caption{Kernel size 5}
+	\end{subfigure}%
+	\begin{subfigure}[b]{0.5\textwidth}
+		\centering
+		\includegraphics[width=7cm]{errk7.png}
+		\caption{Kernel size 7}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.5\textwidth}
+		\centering
+		\includegraphics[width=7cm]{errk9.png}
+		\caption{Kernel size 9}
+	\end{subfigure}%
+	\begin{subfigure}[b]{0.5\textwidth}
+		\centering
+		\includegraphics[width=7cm]{errk11.png}
+		\caption{Kernel size 11}
+	\end{subfigure}
+	\caption{The error for different kernel sizes and 4 scale levels}
+\end{figure}
 
 \end{homeworkSubProblem}
 
