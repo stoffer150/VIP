@@ -65,7 +65,7 @@ for n = num_scales:-1:1
     figure();
     imshow(disparity);
 end
-%%
+
 disp('Calculating...')
 for k = 5:2:11
     for s = 1:4
