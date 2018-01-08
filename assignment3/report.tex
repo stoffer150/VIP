@@ -215,7 +215,12 @@ For this assignment \texttt{Matlab} and its \texttt{Image processing toolbox} ha
 
 \end{homeworkSubProblem}
 
-\begin{homeworkSubProblem}[Implementation of gaussian pyramids]
+\begin{homeworkSubProblem}[The code]
+We used a few built-in methods for essential parts of the program. First up, we used Matlab's \texttt{impyramid} in order to make the different scales. This function applies a slight blur (something like a Gaussian blur) and downsizes the image to half height and width.\\
+Secondly, we used Matlab's \texttt{normxcorr2} for calculating the normalized cross correlation between a kernel/template and a horizontal fragment of the target image. Unfortunately, this was an unwise decision, as it also calculates all horizontal correlations (i.e. having the kernel partially above or below the center line of the search area). This uses up a large, and completely unnecessary, amount of computer power.\\
+Ignoring that, our program works by taking any pre-calculated disparities (from lower scale levels), and using corresponding disparity for a given pixel to determine where to center the search area. Once a search area is chosen, we use the correlation function to determine at which pixel on the same horizontal axis there is a best match with a patch around the original pixel location.\\
+The difference between the original location and the best match is then recorded as the disparity for that pixel. Note that we do not accept negative disparities, as the scene should only be moving in one direction.\\
+The cross-correlation function also compares the patch with the search area such that the patch only partially overlaps with the search area (at the edges). We have chosen to ignore such comparisons, as they may have a very high correlation, but are obviously wrong (according to our tests). Therefore the disparities near the left edge of the image are all zero; Which also makes some sense, as we in truth do not know what would lie outside of the image.
 
 \end{homeworkSubProblem}
 
@@ -400,7 +405,7 @@ From the tables we can see that for all number of scale levels the mean error go
 
 The standard deviation of the error does not seem to depend greatly on the kernel size, but still there is a slight tendency for the standard deviation to become smaller when the number of scales goes up.
 
-For few scale levels we seem to get fewer large errors when the kernel size is small, but as soon as we have more than 2 levels we also need larger kernels. 
+For few scale levels we seem to get fewer large errors when the kernel size is small, but as soon as we have more than 2 levels we also need larger kernels. We get the overall best results when we use 4 scales levels. Figure \ref{fig:error} visualize the difference in the ground truth and the calculated disparity, for different kernel sizes and 4 scale levels. As suspected we get the most errors for kernel size 5, after which the errors gradually disappears. Looking at figure \ref{fig:error}d, which we read from the tables is the combination with least large errors, we see that most of the errors we do get are around the objects, namely pixels becoming obscured or cease being obscured. We also see large errors on the borders, which in the ground truth image have been manually set to 0. We have not done so, hence the errors. 
 
 \begin{figure}[H]
 	\centering
@@ -425,7 +430,12 @@ For few scale levels we seem to get fewer large errors when the kernel size is s
 		\caption{Kernel size 11}
 	\end{subfigure}
 	\caption{The error for different kernel sizes and 4 scale levels}
+	\label{fig:error}
 \end{figure}
+
+Looking at figure \ref{fig:disparities}p, again the disparity calculation which we read from the tables is our most successful result, we see that we got most of it right. Form our calculations the lamp is closest to us, following part of the bust's face, the rest of the bust, the table and everything on it, then the camera and lastly the bookcase in the background. This is exactly the order we see in the ground truth image, though our edges are not quite as smooth, and as we already mentioned we have a problem with discontinuities("holes"). However we are still able to recognize the shapes of the objects in the image. Part of the reason why we get so many errors might be because we have calculated disparity on different images than the ones used to calculate the ground truth. We used \texttt{scene1.row3.col1.ppm} and \texttt{scene1.row3.col2.ppm} whereas they might have used col5 instead of col2. The values of the ground truth and our calculation might also be scaled a bit differently.
+
+Overall we believe we have successfully provided depth information which mostly consists with what we see in the ground truth image. 
 
 \end{homeworkSubProblem}
 
