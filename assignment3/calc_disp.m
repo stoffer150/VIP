@@ -9,7 +9,6 @@ function dispa = calc_disp(im1,im2,s,pre_disp)
     v_pad = floor(s(2)/2);
     
     for i = 1:row
-        %disp(int2str(i))
         for j = 1:col
 
             d = uint64(pre_disp(i,j));
@@ -30,7 +29,7 @@ function dispa = calc_disp(im1,im2,s,pre_disp)
             A = im2(max(i-v_pad, 1):min(i+v_pad, row),x_idx);
             A_center = double([temp_center(1), min(d*2+v_pad*a_scale, j - 1) + 1]);
             
-            %Calclate normalized correlation
+            %Calculate normalized correlation
             corr = normxcorr2(temp,A);
             corr_center = A_center + size(temp) - temp_center;
             
@@ -40,10 +39,6 @@ function dispa = calc_disp(im1,im2,s,pre_disp)
             %Find maximum index;
             max_ind = find(corr == max(corr));
             max_ind = max_ind(1);
-            
-%             if max_ind == 1
-%                 max_ind = find(corr == max(corr(2:end)));
-%             end
             
             %Calculate the difference in pixel-position
             diff = corr_center(2) - (max_ind + h_pad*2);

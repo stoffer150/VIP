@@ -214,13 +214,16 @@ For this assignment \texttt{Matlab} and its \texttt{Image processing toolbox} ha
 \begin{homeworkSubProblem}[Assumptions made]
 We have made some assumptions about the input images in order to make the code handed in for this assignment. These are as follows:
 \begin{itemize}
-\item[-] Disparities are calculated using intensity images - not colour images. Images will automatically be converted from colour images using the built-in Matlab method \texttt{rgb2gray}.
+\item[-] The input images are rectified beforehand.
 \item[-] We assume that image objects moves to the right in the second image, as we had trouble making the code work for objects moving in arbitrary direction.
+\item[-] We assume that disparities should be calculated using intensity images - in contrast to the input images that are given as colour images. The images will therefore automatically be converted from colour images to intensity images using the built-in Matlab method \texttt{rgb2gray}.
 \end{itemize}
 \end{homeworkSubProblem}
 
 \begin{homeworkSubProblem}[Method used]
-The method applied for calculating the disparity from rectified images is based on gaussian pyramids. A coarse disparity was first calculated using the smallest image from the gaussian pyramid. Then the disparities were doubled before added to the calculated disparities from the second smallest image from the pyramid. The disparities were doubled to match the 
+The method applied for calculating the disparity from the rectified images is based on gaussian pyramids. A coarse disparity was first calculated using the top scale of the gaussian pyramid (the smallest image). The disparities were then iteratively corrected to increase precision when moving down through the scales in the gaussian pyramid, by doubling the disparities before adding them to the disparities calculated from the next scale. \\\\
+This way, we do not need to search the whole horizontal line, on which matching pixels can lie on, as we narrow down the place where we expect the pixels to be found, given the disparities in the previous scale (as in the scale above the current scale).\\\\
+The actual disparity in any given scale, was calculated based on the normalized cross-correlation. The first pixel with the highest normalized cross-correlation to the right of any given pixel was used as match for any pixel, that is, we have used one-way matching, not two-way matching. We have not made use of any corrections for the discontinuities in the disparities, as suggested in the assignment text (due to lack of time).
 
 \end{homeworkSubProblem}
 
@@ -447,7 +450,7 @@ Looking at figure \ref{fig:disparities}p, again the disparity calculation which 
 \end{homeworkSubProblem}
 
 \begin{homeworkSubProblem}[Remark on results]
-Part of the reason why we get so many errors might be because we have calculated disparity on different images than the ones used to calculate the ground truth. We used \texttt{scene1.row3.col1.ppm} and \texttt{scene1.row3.col2.ppm} whereas they might have used col5 instead of col2. The values of the ground truth and our calculation might also be scaled a bit differently. Overall we believe we have successfully provided depth information which mostly consists with what we see in the ground truth image.
+Part of the reason why we get so many errors might be because we have calculated disparity on different images than the images used for calculating the ground truth. We used \texttt{scene1.row3.col1.ppm} and \texttt{scene1.row3.col2.ppm} whereas the name of the ground truth image indicates that they have used \texttt{scene1.row3.col3.ppm} together with some other (not stated) image. The values of the ground truth and our calculation might also be scaled a bit differently. Despite the errors, we believe overall that we have successfully provided depth information which mostly consists with what we see in the ground truth image.
 \end{homeworkSubProblem}
 
 \end{homeworkProblem}
