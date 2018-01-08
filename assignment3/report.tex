@@ -211,7 +211,16 @@ For this assignment \texttt{Matlab} and its \texttt{Image processing toolbox} ha
 
 \begin{homeworkProblem}[Methods and code]
 
-\begin{homeworkSubProblem}[Method used for calculating disparities]
+\begin{homeworkSubProblem}[Assumptions made]
+We have made some assumptions about the input images in order to make the code handed in for this assignment. These are as follows:
+\begin{itemize}
+\item[-] Disparities are calculated using intensity images - not colour images. Images will automatically be converted from colour images using the built-in Matlab method \texttt{rgb2gray}.
+\item[-] We assume that image objects moves to the right in the second image, as we had trouble making the code work for objects moving in arbitrary direction.
+\end{itemize}
+\end{homeworkSubProblem}
+
+\begin{homeworkSubProblem}[Method used]
+The method applied for calculating the disparity from rectified images is based on gaussian pyramids. A coarse disparity was first calculated using the smallest image from the gaussian pyramid. Then the disparities were doubled before added to the calculated disparities from the second smallest image from the pyramid. The disparities were doubled to match the 
 
 \end{homeworkSubProblem}
 
@@ -433,14 +442,12 @@ For few scale levels we seem to get fewer large errors when the kernel size is s
 	\label{fig:error}
 \end{figure}
 
-Looking at figure \ref{fig:disparities}p, again the disparity calculation which we read from the tables is our most successful result, we see that we got most of it right. Form our calculations the lamp is closest to us, following part of the bust's face, the rest of the bust, the table and everything on it, then the camera and lastly the bookcase in the background. This is exactly the order we see in the ground truth image, though our edges are not quite as smooth, and as we already mentioned we have a problem with discontinuities("holes"). However we are still able to recognize the shapes of the objects in the image. Part of the reason why we get so many errors might be because we have calculated disparity on different images than the ones used to calculate the ground truth. We used \texttt{scene1.row3.col1.ppm} and \texttt{scene1.row3.col2.ppm} whereas they might have used col5 instead of col2. The values of the ground truth and our calculation might also be scaled a bit differently.
-
-Overall we believe we have successfully provided depth information which mostly consists with what we see in the ground truth image. 
+Looking at figure \ref{fig:disparities}p, again the disparity calculation which we read from the tables is our most successful result, we see that we got most of it right. Form our calculations the lamp is closest to us, following part of the bust's face, the rest of the bust, the table and everything on it, then the camera and lastly the bookcase in the background. This is exactly the order we see in the ground truth image, though our edges are not quite as smooth, and as we already mentioned we have a problem with discontinuities("holes"). However we are still able to recognize the shapes of the objects in the image. 
 
 \end{homeworkSubProblem}
 
-\begin{homeworkSubProblem}[Note on results]
-As Søren stated at the lecture the 8th january, several image pairs could be chosen for tests with the tsukuba images, and it is not clear which image pair, the ground truth corresponds to. This might explain the rather big errors we get, but we have not had time to manually check what image pairs corresponds to the ground truth, as Søren suggested.
+\begin{homeworkSubProblem}[Remark on results]
+Part of the reason why we get so many errors might be because we have calculated disparity on different images than the ones used to calculate the ground truth. We used \texttt{scene1.row3.col1.ppm} and \texttt{scene1.row3.col2.ppm} whereas they might have used col5 instead of col2. The values of the ground truth and our calculation might also be scaled a bit differently. Overall we believe we have successfully provided depth information which mostly consists with what we see in the ground truth image.
 \end{homeworkSubProblem}
 
 \end{homeworkProblem}
