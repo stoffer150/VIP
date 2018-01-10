@@ -1,3 +1,3 @@
-load('Buddha.mat');
+% load('Buddha.mat');
 load('Beethoven.mat');
 
