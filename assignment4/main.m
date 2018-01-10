@@ -1,2 +1,2 @@
-beethoven = load('Beethoven.mat');
-buddha = load('Beethoven.mat');
+load('Buddha.mat')
+load('Beethoven.mat')
