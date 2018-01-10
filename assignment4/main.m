@@ -5,14 +5,10 @@
 load('Beethoven.mat');
 
 % Show images
-figure;
-imshow(I(:,:,1),[])
-
-figure;
-imshow(I(:,:,2),[])
-
-figure;
-imshow(I(:,:,3),[])
+for i = 1:size(I, 3)
+    figure;
+    imshow(I(:,:,i),[])
+end
 
 % Create matrix J
 num_lights = size(I, 3);
@@ -32,10 +28,11 @@ N = M ./ albedo;
 
 % Show albedo as image
 double_mask = double(mask);
-double_mask(double_mask>0) = albedo;
+albedo_im = zeros(size(double_mask));
+albedo_im(double_mask>0) = albedo;
 
 figure;
-imshow(double_mask,[]);
+imshow(albedo_im,[]);
 
 % Extract normals from N
 n1 = zeros(size(mask));
@@ -48,6 +45,8 @@ n3(double_mask>0) = N(3,:);
 
 % Compute depth map and display it
 depth_map = unbiased_integrate(n1,n2,n3,mask);
+
+figure;
 display_depth(depth_map);
 
 
@@ -57,14 +56,10 @@ display_depth(depth_map);
 load('Buddha.mat');
 
 % Show images
-figure;
-imshow(I(:,:,1),[])
-
-figure;
-imshow(I(:,:,2),[])
-
-figure;
-imshow(I(:,:,3),[])
+for i = 1:size(I, 3)
+    figure;
+    imshow(I(:,:,i),[])
+end
 
 % Create matrix J
 num_lights = size(I, 3);
@@ -78,18 +73,19 @@ for i = 1:num_lights
 end
 
 % Compute albedo and norm field
-M = S\J;
+M = pinv(S) * J;
 albedo = vecnorm(M);
 N = M ./ albedo;
 
 % Show albedo as image
 double_mask = double(mask);
-double_mask(double_mask>0) = albedo;
+albedo_im = zeros(size(double_mask));
+albedo_im(double_mask>0) = albedo;
 
 figure;
-imshow(double_mask,[]);
+imshow(albedo_im,[]);
 
-% Extract normals from N
+% Extract normals n1, n2 and n3 from N
 n1 = zeros(size(mask));
 n2 = zeros(size(mask));
 n3 = ones(size(mask));
