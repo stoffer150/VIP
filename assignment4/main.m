@@ -1,2 +1,3 @@
-load('Buddha.mat')
-load('Beethoven.mat')
+load('Buddha.mat');
+load('Beethoven.mat');
+
