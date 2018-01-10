@@ -17,13 +17,24 @@ end
 % Compute albedo and norm field
 M = S\J;
 albedo = vecnorm(M);
-n = M ./ albedo;
+N = M ./ albedo;
 
 % Show albedo as image
-albmask = double(mask);
-albmask(albmask>0) = albedo;
-imshow(albmask,[]);
+double_mask = double(mask);
+double_mask(double_mask>0) = albedo;
+
+figure;
+imagesc(double_mask);
+colormap gray;
+
+% Extract normals from N
+n1 = zeros(size(mask));
+n2 = zeros(size(mask));
+n3 = ones(size(mask));
+
+n1(double_mask>0) = N(1,:);
+n2(double_mask>0) = N(2,:);
+n3(double_mask>0) = N(3,:);
 
 % Compute depth map
-depth_map = unbiased_integrate(n(1,:),n(2,:),n(3,:),mask);
-
+depth_map = unbiased_integrate(n1,n2,n3,mask);
