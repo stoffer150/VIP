@@ -1,0 +1,26 @@
+\section{Theory of Photometric stereo}
+Photometric stereo is a process of estimating a depth parameter for every pixel in an image (aka. a Monge patch).\\
+As opposed to stereoscopic images - where images are taken at slightly different angles - Photometric stereo takes several images from the exact same position, and capturing the exact same scene (as much as is possible); There is only one varying parameter, and that is the light(-source).\\
+The process includes taking images where the (only) light-source is placed at different angles between each image and from then captured intensity values infer a depth.\\
+This is done by using the diffuse term of Lambert Law:
+\begin{equation}
+B(x,y) = \rho(x, y)N(x, y) \cdot S
+\end{equation}
+Assuming that the point is illuminated by the source.\\
+Then assuming that there is no ambient light, then we can write,
+\begin{equation}
+I(x, y) = kB(x,y) = k\rho(x, y)N(x, y) \cdot S\\
+= g(x, y) \cdot V
+\end{equation}
+where $g$ describes the surface, and $V$ the camera and source.\\
+Then since we know the intensity values captured by the camera, $I(x,y)$, and the properties of the camera and source, $V(x,y)$, we can solve a simple linear equation, to calculate $g(x, y)$.\\
+Once the have calculated $g$, the albedo can easily be removed since every vector in $g$ is just the surfaces point's normal-vector scaled by the albedo, which is just equal to $|g|$, thus giving the normal-field.\\
+The depth function gradients can then be estimated by having three (or more) sets of calculated normals, $N_1, N_2, N_3$:
+\begin{equation}
+\nabla f(x, y) = [\frac{N_1(x, y)}{N_3(x, y)}, \frac{N_2(x, y)}{N_3(x, y)}]
+\end{equation}
+Then, once can finally estimate the depth function $f(x, y)$ by integration.\\
+\\
+This is all possible to due knowing the light sources exact position and direction, as well as the camera position and viewing direction, and then using the equation for diffuse reflection to estimate normals from captured light intensity.\\
+\\
+However, there are a few considerations to note: This is based on the assumption of an orthographic camera, however since most cameras are perspective cameras, this assumption probably doesn't hold. The assumption of a perspective camera would require complicated math when estimating the depth function gradients.
