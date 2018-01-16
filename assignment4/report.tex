@@ -1,3 +1,34 @@
+\documentclass[12pt,a4paper,oneside,final]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{bm}
+\usepackage[hidelinks]{hyperref}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{titlesec}
+
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage[section]{placeins}
+\usepackage{color}
+
+\pagestyle{fancy}
+\addtolength{\headheight}{\baselineskip}
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{1}
+
+\rhead{Vision and image processing \\ Assignment 4(5), 17/01-18}
+\lhead{Terese Darum, zbl558; Cecilie Novak, bk662; \\ Christoffer Belhage, DZP300}
+\cfoot{Page \thepage\ of \pageref{LastPage}}
+
+\begin{document}
+
 \section{Theory of Photometric stereo}
 Photometric stereo is a process of estimating a depth parameter for every pixel in an image (aka. a Monge patch).\\
 As opposed to stereoscopic images - where images are taken at slightly different angles - Photometric stereo takes several images from the exact same position, and capturing the exact same scene (as much as is possible); There is only one varying parameter, and that is the light(-source).\\
@@ -24,3 +55,9 @@ Then, once can finally estimate the depth function $f(x, y)$ by integration.\\
 This is all possible to due knowing the light sources exact position and direction, as well as the camera position and viewing direction, and then using the equation for diffuse reflection to estimate normals from captured light intensity.\\
 \\
 However, there are a few considerations to note: This is based on the assumption of an orthographic camera, however since most cameras are perspective cameras, this assumption probably doesn't hold. The assumption of a perspective camera would require complicated math when estimating the depth function gradients.
+
+\section{Implementation}
+
+\section{Results}
+
+\end{document}
