@@ -24,7 +24,7 @@
 \setcounter{tocdepth}{1}
 
 \rhead{Vision and image processing \\ Assignment 4(5), 17/01-18}
-\lhead{Terese Darum, zbl558; Cecilie Novak, bk662; \\ Christoffer Belhage, DZP300}
+\lhead{Therese Darum, zbl558; Cecilie Novak, bk662; \\ Christoffer Belhage, DZP300}
 \cfoot{Page \thepage\ of \pageref{LastPage}}
 
 \begin{document}
@@ -53,5 +53,63 @@ There are a few considerations for this process to note: It is based on the assu
 \section{Implementation}
 
 \section{Results}
+In figure \ref{fig:BeethovenDepth} we see the depth map we calculated for the Beethoven images from 3 angles. In figure \ref{fig:albedo}a we see the albedo within the mask. In the albedo image we observe highlights in the hair, around the collar and a few other places, indicating that here the material absorbs more light. These are most likely due to the shape of the bust, we are trying to make a 3D model off. These particular areas of the bust are alway shadowed to a certain extent, thus creating the illusion that here the material absorbs more at the light. 
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{.33\textwidth}
+		\centering
+		\includegraphics[width=5.5cm]{Beethoven1}
+		\caption{Right}
+	\end{subfigure}%
+	\begin{subfigure}{.33\textwidth}
+		\centering
+		\includegraphics[width=5.5cm]{Beethoven2}
+		\caption{Top}
+	\end{subfigure}%
+	\begin{subfigure}{.33\textwidth}
+		\centering
+		\includegraphics[width=5cm]{Beethoven3}
+		\caption{Left}
+	\end{subfigure}
+	\caption{The Beethoven depth map from different view points}
+	\label{fig:BeethovenDepth}
+\end{figure}
+With the clean synthetic image set of Beethoven, we get a very clean 3D model with a lot of details. The same cannot be said for the real Buddha image set. In figure \ref{fig:BuddahDepth} we see the calculated depth map of this set and in figure \ref{fig:albedo}b we see the corresponding albedo. The depth map is very flat, expect for the top part where the hair begins. We can see a hint of the nose and eyes.
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{.33\textwidth}
+		\centering
+		\includegraphics[width=5.5cm]{Buddha1}
+		\caption{Right}
+	\end{subfigure}%
+	\begin{subfigure}{.33\textwidth}
+		\centering
+		\includegraphics[width=5.5cm]{Buddha2}
+		\caption{Top}
+	\end{subfigure}%
+	\begin{subfigure}{.33\textwidth}
+		\centering
+		\includegraphics[width=5cm]{Buddha3}
+		\caption{Bottom}
+	\end{subfigure}
+	\caption{The Buddha depth map from different view points}
+	\label{fig:BuddahDepth}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[height=6cm]{BeethovenAlbedo}
+		\caption{The albedo for Beethoven}
+	\end{subfigure}%
+	\begin{subfigure}{.5\textwidth}
+		\centering
+		\includegraphics[height=6cm]{BuddhaAlbedo}
+		\caption{The albedo for Buddha}
+	\end{subfigure}
+	\caption{The calculated albedo for Beethoven and Buddha}
+	\label{fig:albedo}
+\end{figure}
 
 \end{document}
