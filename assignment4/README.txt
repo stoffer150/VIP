@@ -1,7 +1,7 @@
 Requirements:
 
 Matlab basic installation
-Matlab Image Processing Toolbox
+Handed out Matlab functions from Absalon
 
 
 How to run:

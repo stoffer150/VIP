@@ -29,32 +29,26 @@
 
 \begin{document}
 
-\section{Theory of Photometric stereo}
-Photometric stereo is a process of estimating a depth parameter for every pixel in an image (aka. a Monge patch).\\
-As opposed to stereoscopic images - where images are taken at slightly different angles - Photometric stereo takes several images from the exact same position, and capturing the exact same scene (as much as is possible); There is only one varying parameter, and that is the light(-source).\\
-The process includes taking images where the (only) light-source is placed at different angles between each image and from then captured intensity values infer a depth.\\
-This is done by using the diffuse term of Lambert Law:
+\section{Programming language and libraries used}
+For this assignment \texttt{Matlab} and the handed out matlab functions \texttt{unbiased\_integrate.m} and \texttt{display\_detph.m}, which can be found at Absalon, have been used.
+
+\section{Theory of photometric stereo}
+Photometric stereo is a process of estimating a depth parameter for every pixel in an image that results in a depth map for the pixels in the image (also known as Monge patches).\\\\
+As opposed to stereoscopic images, where images are taken at slightly different angles, photometric stereo uses several images taken from the exact same position, aiming at capturing the exact same scene as accurate as is possible, the only varying parameter being the placement of the (only) light source.\\\\
+During the process, images where the light source is placed at different angles from image to image are taken and from these captured intensity values the depth map is inferred.\\\\
+Assuming that the illuminated object has a rough surface (and is only illuminated by our single light source), the depth map can be inferred using Lambert's Law for diffuse reflection:
 \begin{equation}
-B(x,y) = \rho(x, y)N(x, y) \cdot S
+I(x,y) = \rho(x,y) n(x,y) \cdot S(x,y)
 \end{equation}
-Assuming that the point is illuminated by the source.\\
-Then assuming that there is no ambient light, then we can write,
+where $I(x,y)$ is the image intensity value (i.e. the measured reflection of light from the object), $\rho(x,y)$ is the albedo value that defines the surface material's light absorbtion property and $n(x,y)$ is the normalized surface normal to the surface $S(x,y)$.\\\\
+Since we only have a single light source, we can assume that there is no ambient light and we can model the intensities as
 \begin{equation}
-I(x, y) = kB(x,y) = k\rho(x, y)N(x, y) \cdot S\\
-= g(x, y) \cdot V
+I(x,y) = \rho(x,y) n(x,y) \cdot S(x,y) = g(x,y) \cdot V
 \end{equation}
-where $g$ describes the surface, and $V$ the camera and source.\\
-Then since we know the intensity values captured by the camera, $I(x,y)$, and the properties of the camera and source, $V(x,y)$, we can solve a simple linear equation, to calculate $g(x, y)$.\\
-Once the have calculated $g$, the albedo can easily be removed since every vector in $g$ is just the surfaces point's normal-vector scaled by the albedo, which is just equal to $|g|$, thus giving the normal-field.\\
-The depth function gradients can then be estimated by having three (or more) sets of calculated normals, $N_1, N_2, N_3$:
-\begin{equation}
-\nabla f(x, y) = [\frac{N_1(x, y)}{N_3(x, y)}, \frac{N_2(x, y)}{N_3(x, y)}]
-\end{equation}
-Then, once can finally estimate the depth function $f(x, y)$ by integration.\\
-\\
-This is all possible to due knowing the light sources exact position and direction, as well as the camera position and viewing direction, and then using the equation for diffuse reflection to estimate normals from captured light intensity.\\
-\\
-However, there are a few considerations to note: This is based on the assumption of an orthographic camera, however since most cameras are perspective cameras, this assumption probably doesn't hold. The assumption of a perspective camera would require complicated math when estimating the depth function gradients.
+where $g(x,y)$ describes the surface by its normal and albedo simultaneously, as suggested by Woodham, and $V$ is a vector giving the position and pointing direction of the light source. Since we know the intensity values $I(x,y)$ captured by the camera and the position and pointing direction of the light source $V$, we can solve the linear equations from the images, to calculate $g(x,y)$.\\\\
+Once the $g(x,y)$ has been calculated, the albedo and the normalized surface normals can easily be recovered. Every vector $g(x,y)$ corresponds to the surface normalized normal vector $n(x,y)$ scaled by the albedo $\rho(x,y)$, so the albedo can be recovered by calculating $|g(x,y)|$ and the normalized normal vector as $\frac{g(x,y)}{|g(x,y)|}$.\\\\
+Then, one can finally estimate the depth map (surface) by surface integration of the normalized normal vectors $n_1, n_2, n_3$ (for the setting using 3 images - if using more than 3 images, it will not necessarily be the normal vectors for image 1-3 that should be used).\\\\
+There are a few considerations for this process to note: It is based on the assumption of an orthographic camera, however most cameras are perspective cameras. It is also assumed that the light source emits parallel light (the light source is placed FAR AWAY), but in reality, the emitted light is radially emitted, as it is unrealistic to be able to place the light source far enough away. As mentioned, we also assumed the surface of any object to be rough in order to leave out modelling of any specularities. In reality, not all objects have completely rough surfaces.
 
 \section{Implementation}
 
