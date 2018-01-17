@@ -1,9 +1,0 @@
-\contentsline {section}{Programming language and used libraries}{3}
-\contentsline {section}{Assumptions, method used and implementation}{3}
-\contentsline {subsection}{Assumptions made}{3}
-\contentsline {subsection}{Method used}{3}
-\contentsline {subsection}{The implementation}{3}
-\contentsline {section}{Testing and results}{4}
-\contentsline {subsection}{Methods}{4}
-\contentsline {subsection}{Results}{4}
-\contentsline {subsection}{Remark on results}{8}
