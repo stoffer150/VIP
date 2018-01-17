@@ -2,7 +2,7 @@ close all
 clear
 
 first_im = rgb2gray(imread('tsukuba/scene1.row3.col1.ppm'));
-second_im = rgb2gray(imread('tsukuba/scene1.row3.col2.ppm'));
+second_im = rgb2gray(imread('tsukuba/scene1.row3.col3.ppm'));
 
 first_im = imgaussfilt(first_im, 0.01);
 second_im = imgaussfilt(second_im, 0.01);
@@ -37,7 +37,7 @@ for s = 1:num_scales
             disp(level)
             if level < s
                 disparities{s, (k-5) / 2 + 1, level} = ...
-                    calc_disp(im1, im2, [k, k], imresize(disparities{s, (k-5) / 2 + 1, level+1}, 2, 'nearest'));
+                    calc_disp(im1, im2, [k, k], repelem(disparities{s, (k-5) / 2 + 1, level+1},2,2));
             else
                 disparities{s, (k-5) / 2 + 1, level} = ...
                     calc_disp(im1, im2, [k, k]);
