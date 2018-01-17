@@ -61,7 +61,7 @@ There are a few considerations for this process to note: It is based on the assu
 - Integration and display (handed out functions)
 
 \section{Results}
-In figure \ref{fig:BeethovenDepth} we see the depth map we calculated for the Beethoven images from 3 angles. In figure \ref{fig:albedo}a we see the albedo within the mask. In the albedo image we observe highlights in the hair, around the collar and a few other places, indicating that here the material absorbs more light. These are most likely due to the shape of the bust, we are trying to make a 3D model off. These particular areas of the bust are alway shadowed to a certain extent, thus creating the illusion that here the material absorbs more at the light. 
+In figure \ref{fig:BeethovenDepth} we see the depth map we calculated for the Beethoven images from 3 angles. In figure \ref{fig:albedo}a we see the albedo within the mask. In the albedo image we observe highlights in the hair, around the collar and a few other places, indicating that here the material absorbs less light, meaning the material reflect a large part of the light. These are most likely due to the shape of the bust, we are trying to make a 3D model off. These particular areas of the bust are alway shadowed to a certain extent, thus creating the illusion that here the material absorbs more at the light. 
 \begin{figure}[H]
 	\centering
 	\begin{subfigure}{.33\textwidth}
@@ -82,7 +82,9 @@ In figure \ref{fig:BeethovenDepth} we see the depth map we calculated for the Be
 	\caption{The Beethoven depth map from different view points}
 	\label{fig:BeethovenDepth}
 \end{figure}
-With the clean synthetic image set of Beethoven, we get a very clean 3D model with a lot of details. The same cannot be said for the real Buddha image set. In figure \ref{fig:BuddahDepth} we see the calculated depth map of this set and in figure \ref{fig:albedo}b we see the corresponding albedo. The depth map is very flat, expect for the top part where the hair begins. We can see a hint of the nose and eyes.
+With the clean synthetic image set of Beethoven, we get a very clean 3D model with a lot of details. The same cannot be said for the real Buddha image set. In figure \ref{fig:BuddahDepth} we see the calculated depth map of this set and in figure \ref{fig:albedo}b we see the corresponding albedo. The depth map is very flat, expect for the top part where the hair begins. We can see a hint of the nose and eyes. Part of the reason for the bad result is that the lights have been badly placed. The lights have been placed in such a way that large parts of the bust is completely in shadow in many of the images, making it difficult to extract depth information. Looking at the hair in figure \ref{fig:BuddahDepth} and the images we used for computation, we see that for all the images the hair is more evenly lit than the rest. This provide us with just enough shadow to compute accurate depth information. Another problem could also be the distance to the light source. As explained in the theory section, our computation assumes that the light beams are far away and thus parallel. If the light source is too close then it emits the light in a cone shape, meaning that the light source vector is different for different spots of the object, thus making our computation very inaccurate.
+\\\\
+A possible way to improve our results is to select the "good" lights, for example light from the right side, left side and front. This should provide us with enough shadows to compute a depth map, without introducing so much darkness that it becomes difficult to see depth differences. Alternatively we could try to select the 3 best images for each pixel, however this introduces a lot of complications, such as implementation difficulties, a need for intensity thresholding and problems with neighboring pixels not having the same light.
 \begin{figure}[H]
 	\centering
 	\begin{subfigure}{.33\textwidth}
