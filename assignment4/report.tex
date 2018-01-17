@@ -52,8 +52,8 @@ There are a few considerations for this process to note: It is based on the assu
 
 \section{Implementation}
 
-To implement the photometric stereo, we have created the matrix for the albedo modulated normals as $M = S^{-1} J$, where $S$ is the light sources and $J$ is  the image intensities, where the binary mask that indicates areas where we should solve for photometric stereo, equals 1.\\\\
-As the Beethoven image dataset is a synthetic example, we have used the "exact" inverse. This has been computed using the Matlab built-in function for calculation inverse matrices. For the real example of the Buddha image dataset, we have used the pseudo-inverse (as we are not garanteed that the exact inverse exists when using real data). This we have done using the built-in Matlab function \texttt{pinv}.\\\\
+To implement the photometric stereo, we have created the matrix for the albedo modulated normal field as $M = S^{-1} J$, where $S$ is the light sources and $J$ is the image intensities, in the areas where the binary mask indicates that we should solve for photometric stereo.\\\\
+As the Beethoven image dataset is a synthetic example, we have used the "exact" inverse (as exact as it can become using computers, at least). This has been computed using the Matlab built-in function for calculation of inverse matrices. For the real example of the Buddha image dataset, we have used the pseudo-inverse (as we are not garanteed that the exact inverse exists when using real data). We have done this using the built-in Matlab function \texttt{pinv}.\\\\
 The albedo and normal fields are then isolated from the $M$ matrix as described in the theory part (previous section).
 Last, the depth map has been inferred by integration using the handed out Matlab function \texttt{unbiased\_integrate.m} and displayed using the handed out \texttt{display\_detph.m}.
 
