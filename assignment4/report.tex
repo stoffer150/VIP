@@ -52,13 +52,10 @@ There are a few considerations for this process to note: It is based on the assu
 
 \section{Implementation}
 
-- How we create J matrix
-
-- How we compute the albedo modulated normal field (g(x,y) - albedo and normals simultaneously, exact inverse in constructed images and pseudoinverse in real images)
-
-- Albedo and normal isolation (as described in theory)
-
-- Integration and display (handed out functions)
+To implement the photometric stereo, we have created the matrix for the albedo modulated normals as $M = S^{-1} J$, where $S$ is the light sources and $J$ is  the image intensities, where the binary mask that indicates areas where we should solve for photometric stereo, equals 1.\\\\
+As the Beethoven image dataset is a synthetic example, we have used the "exact" inverse. This has been computed using the Matlab built-in function for calculation inverse matrices. For the real example of the Buddha image dataset, we have used the pseudo-inverse (as we are not garanteed that the exact inverse exists when using real data). This we have done using the built-in Matlab function \texttt{pinv}.\\\\
+The albedo and normal fields are then isolated from the $M$ matrix as described in the theory part (previous section).
+Last, the depth map has been inferred by integration using the handed out Matlab function \texttt{unbiased\_integrate.m} and displayed using the handed out \texttt{display\_detph.m}.
 
 \section{Results}
 In figure \ref{fig:BeethovenDepth} we see the depth map we calculated for the Beethoven images from 3 angles. In figure \ref{fig:albedo}a we see the albedo within the mask. In the albedo image we observe highlights in the hair, around the collar and a few other places, indicating that here the material absorbs more light. These are most likely due to the shape of the bust, we are trying to make a 3D model off. These particular areas of the bust are alway shadowed to a certain extent, thus creating the illusion that here the material absorbs more at the light. 
@@ -119,7 +116,5 @@ With the clean synthetic image set of Beethoven, we get a very clean 3D model wi
 	\caption{The calculated albedo for Beethoven and Buddha}
 	\label{fig:albedo}
 \end{figure}
-
-Tereses del.
 
 \end{document}
