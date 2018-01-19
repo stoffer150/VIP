@@ -80,7 +80,7 @@ for i = 1:3
             end
             disp(strcat('k = ',num2str(k), ', scales used = ',num2str(s)))
             err = abs(double(gt_disp) - dispar);
-            imwrite(err, ['err_s', int2str(s), '_k', int2str(k), 'set_', num2str(i), '.png']);
+            imwrite(uint8(err), ['err_s', int2str(s), '_k', int2str(k), 'set_', num2str(i), '.png']);
             err = err(:);
 
             mean_err = mean(err);
