@@ -143,6 +143,7 @@ When we had implemented our optimizations we performed a parameter test; That is
 
 In figure \ref{fig:disparities} we see the resulting disparity images for different numbers of scale levels and kernel sizes. There are a few things to take away from this: Template size means a lot for the quality of the result. With the lower size templates, there are a lot of "holes". This could be due to the search area being scaled according to the template size; A deliberate choice, but in retrospect it may have been better to choose a fixed size for the search area across all templates, the reason being that smaller templates may result in such a narrow search area that the true match is outside of the search area and thus not able to be matched correctly.\\\\
 Then one would expect that any additional scale levels would "fix" the issue - However this does not seem to be the case when looking at the difference between scales levels 3 and 4 with template size 5. There is only a slight difference and that is on the lamp. It makes sense that there would be a difference there, as it is the part of the image that changes the most.\\\\
+\iffalse
 {\color{red} It is pretty obvoius when looking at the lower level disparities in figure \ref{fig:lowlevel}:
 \begin{figure}[H]
 \centering
@@ -165,10 +166,13 @@ Then one would expect that any additional scale levels would "fix" the issue - H
 \caption{The disparity of different scales (using kernel size 7). Higher resolution scales are based on lower resolution scales.}
 \label{fig:lowlevel}
 \end{figure}
-While the disparity images in figure \ref{fig:lowlevel} are for template size 7, and not 5, it still shows why adding the last scale added quality to the lamp area, but why the rest of the image (for kernel size 5) is still not filled out is puzzling.}\\\\
+While the disparity images in figure \ref{fig:lowlevel} are for template size 7, and not 5, it still shows why adding the last scale added quality to the lamp area, but why the rest of the image (for kernel size 5) is still not filled out is puzzling.}
+\fi
 Another fact we see from the tests is that larger templates improve quality (probably with diminishing returns); However, increased template size also means more computation - Especially in our implementation where search area scales with the template size and because of our use of \texttt{normxcorr2}. It also means higher risk of false positive matchings and more errors at the boundary of objects due to stronger occlusion effects.\\\\
+\iffalse
 {\color{red}
 Lastly, adding a level of scale only add benefits to a certain level; In most cases we see little to no improvement in quality when adding the fourth scale. Maybe with an even smaller search area, extra scale levels would make sense, but they are already fairly small. }
+\fi
 
 \begin{table}[H]
 	\centering
