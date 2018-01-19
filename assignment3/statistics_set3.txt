@@ -1,0 +1,81 @@
+k =5, scales used =1
+Mean error:94.8996
+Standard deviation:79.69
+Number of large errors:61344
+Faction of large errors:1
+k =5, scales used =2
+Mean error:93.3251
+Standard deviation:80.1577
+Number of large errors:61344
+Faction of large errors:1
+k =5, scales used =3
+Mean error:92.7935
+Standard deviation:79.7229
+Number of large errors:61344
+Faction of large errors:1
+k =5, scales used =4
+Mean error:90.1271
+Standard deviation:77.0908
+Number of large errors:61344
+Faction of large errors:1
+99      end
+k =7, scales used =1
+Mean error:94.2155
+Standard deviation:79.9415
+Number of large errors:61344
+Faction of large errors:1
+k =7, scales used =2
+Mean error:92.6104
+Standard deviation:80.1823
+Number of large errors:61344
+Faction of large errors:1
+k =7, scales used =3
+Mean error:91.9727
+Standard deviation:79.8318
+Number of large errors:61344
+Faction of large errors:1
+k =7, scales used =4
+Mean error:83.5666
+Standard deviation:70.789
+Number of large errors:61329
+Faction of large errors:0.99976
+k =9, scales used =1
+Mean error:93.4312
+Standard deviation:80.2844
+Number of large errors:61344
+Faction of large errors:1
+k =9, scales used =2
+Mean error:92.3554
+Standard deviation:79.9789
+Number of large errors:61344
+Faction of large errors:1
+k =9, scales used =3
+Mean error:89.371
+Standard deviation:77.5294
+Number of large errors:61344
+Faction of large errors:1
+k =9, scales used =4
+Mean error:83.1859
+Standard deviation:70.9539
+Number of large errors:61314
+Faction of large errors:0.99951
+k =11, scales used =1
+Mean error:92.9252
+Standard deviation:80.4664
+Number of large errors:61344
+Faction of large errors:1
+k =11, scales used =2
+Mean error:92.1996
+Standard deviation:79.881
+Number of large errors:61344
+Faction of large errors:1
+k =11, scales used =3
+Mean error:84.3276
+Standard deviation:71.9821
+Number of large errors:61285
+Faction of large errors:0.99904
+k =11, scales used =4
+Mean error:82.9875
+Standard deviation:71.1124
+Number of large errors:61243
+Faction of large errors:0.99835
