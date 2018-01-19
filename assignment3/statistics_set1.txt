@@ -1,0 +1,83 @@
+k =5, scales used =1
+Mean error:82.5783
+Standard deviation:55.0602
+Number of large errors:97348
+Faction of large errors:0.88024
+k =5, scales used =2
+Mean error:77.0114
+Standard deviation:52.3448
+Number of large errors:99517
+Faction of large errors:0.89986
+k =5, scales used =3
+Mean error:59.5146
+Standard deviation:50.7388
+Number of large errors:102578
+Faction of large errors:0.92754
+k =5, scales used =4
+Mean error:45.9658
+Standard deviation:43.8
+Number of large errors:103052
+Faction of large errors:0.93182
+
+k =7, scales used =1
+Mean error:80.773
+Standard deviation:53.9467
+Number of large errors:97653
+Faction of large errors:0.883
+k =7, scales used =2
+Mean error:67.0408
+Standard deviation:52.5409
+Number of large errors:101271
+Faction of large errors:0.91572
+k =7, scales used =3
+Mean error:40.2909
+Standard deviation:47.164
+Number of large errors:102721
+Faction of large errors:0.92883
+k =7, scales used =4
+Mean error:32.6915
+Standard deviation:40.4368
+Number of large errors:100516
+Faction of large errors:0.90889
+
+k =9, scales used =1
+Mean error:78.0966
+Standard deviation:52.7384
+Number of large errors:98408
+Faction of large errors:0.88983
+k =9, scales used =2
+Mean error:51.0095
+Standard deviation:54.1774
+Number of large errors:102667
+Faction of large errors:0.92834
+k =9, scales used =3
+Mean error:32.3679
+Standard deviation:40.1991
+Number of large errors:101346
+Faction of large errors:0.9164
+k =9, scales used =4
+Mean error:31.9275
+Standard deviation:40.5484
+Number of large errors:100719
+Faction of large errors:0.91073
+
+k =11, scales used =1
+Mean error:75.4968
+Standard deviation:52.0157
+Number of large errors:98815
+Faction of large errors:0.89351
+k =11, scales used =2
+Mean error:44.1494
+Standard deviation:51.2203
+Number of large errors:102616
+Faction of large errors:0.92788
+k =11, scales used =3
+Mean error:31.3559
+Standard deviation:40.3727
+Number of large errors:100235
+Faction of large errors:0.90635
+k =11, scales used =4
+Mean error:31.5338
+Standard deviation:40.6772
+Number of large errors:100257
+Faction of large errors:0.90655
