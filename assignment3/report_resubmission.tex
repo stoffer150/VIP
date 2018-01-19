@@ -28,41 +28,176 @@
 \cfoot{Page \thepage\ of \pageref{LastPage}}
 
 \begin{document}
-	
-	\section{Programming language and libraries used}
-	For this assignment \texttt{Matlab} and its \texttt{Image processing toolbox} have been used.
-	
-	\section{Assumptions, method used and implementation}
-	
-	\subsection{Assumptions made}
-	We have made some assumptions about the input images in order to make the code handed in for this assignment. These are as follows:
-	\begin{itemize}
-		\item[-] The input images are assumed to be rectified beforehand.
-		\item[-] We assume that image objects moves to the right in the second image.  That is, we do not accept negative disparities (corresponding to image objects moving to the left in the images), as the scene should only be moving in one direction.
-		\item[-] We assume that disparities should be calculated using intensity images - in contrast to the input images that are given as colour images. The images will therefore automatically be converted from colour images to intensity images using the built-in Matlab method \texttt{rgb2gray}.
-	\end{itemize}
-	
-	\subsection{Method used}
-	The method applied for calculating the disparity from the rectified images is based on gaussian pyramids. A coarse disparity was first calculated using the top scale of the gaussian pyramid (the smallest image). The disparities were then iteratively corrected to increase precision when moving down through the scales in the gaussian pyramid, by doubling the disparities before adding them to the disparities calculated from the next scale. \\\\
-	This way, we do not need to search the whole horizontal line, on which matching pixels can lie on, as we narrow down the place where we expect the pixels to be found, given the disparities in the previous scale (as in the scale above the current scale).\\\\
-	The actual disparity in any given scale, was calculated based on the normalized cross-correlation. The first pixel with the highest normalized cross-correlation to the right of any given pixel was used as match for any pixel, that is, we have used one-way matching, not two-way matching. We have not made use of any corrections for the discontinuities in the disparities, as suggested in the assignment text (due to lack of time). \\\\
-	We have not computed a full gaussian pyramid for the disparity calculations, but only uses up to 4 scales (as adviced in the assignment text), which might affect the calculations of the disparity, as we do not start at the smallest scale possible.
-	
-	\section{The implementation}
-	We have used some built-in methods for essential parts of the program. First up, we used Matlab's \texttt{impyramid} method in order to create the different scales of the gaussian pyramid. This function applies a slight blur to the image (something similar to a gaussian blur), then downsizes the image to half height and width.\\\\
-	Secondly, we used Matlab's \texttt{normxcorr2} method for calculating the normalized cross-correlation between a template and a horizontal fragment of the target image - the search area. Unfortunately, this was an unwise decision, as it also calculates all horizontal correlations (i.e. having the template partially above or below the center line of the search area). This uses up a large, and completely unnecessary, amount of computing power.\\\\
-	Ignoring that, our program works by taking any pre-calculated disparities (from higher scale levels in the gaussian pyramid), and using corresponding disparities for a given pixel to determine where to center the search area. Once a search area is chosen, we use the normalized cross-correlation function to determine which pixel on the same horizontal line is the best match, using a patch around the original pixel location as template. The difference between the original location and the best matching pixel is then recorded as the disparity for that pixel.\\\\
-	The cross-correlation function also compares the patch with the search area such that the patch only partially overlaps with the search area (at the edges). We have chosen to ignore such comparisons, as they may have a very high correlation, but are obviously wrong (according to tests that we made). Therefore the disparities near the left edge of the image are all zero; Which also makes some sense, as we in truth do not know what would lie outside of the image.
-	
-	\section{Testing and results}
-	
-	\subsection{Methods}
-	We spent a lot of time debugging our code; The most effective ways that we tested our implementation was by using small fragments of pictures shifted a couple of pixels. That way we knew what the expected result should be, and was able to verify if the code worked as intended.\\\\
-	Once we had working code up and running, we used the sample images to optimize our methods to get better results. Some of these optmizations included tweaking the search area for the cross-correlation and discarding the parts of the search area on the left side of the template (see description in previous section for details).\\\\
-	When we had implemented our optimizations we performed a parameter test; That is, we varied the template size, and the number of scales used. Results are shown in the next section.
-	
-	\subsection{Results}
-	\begin{figure}[H]
+
+\section{Programming language and libraries used}
+For this assignment \texttt{Matlab} and its \texttt{Image processing toolbox} have been used.
+
+\section{Assumptions, method used and implementation}
+
+\subsection{Assumptions made}
+We have made some assumptions about the input images in order to make the code handed in for this assignment. These are as follows:
+\begin{itemize}
+\item[-] The input images are assumed to be rectified beforehand.
+\item[-] We assume that image objects moves to the right in the second image.  That is, we do not accept negative disparities (corresponding to image objects moving to the left in the images), as the scene should only be moving in one direction.
+\item[-] We assume that disparities should be calculated using intensity images - in contrast to the input images that are given as colour images. The images will therefore automatically be converted from colour images to intensity images using the built-in Matlab method \texttt{rgb2gray}.
+\end{itemize}
+
+\subsection{Method used}
+The method applied for calculating the disparity from the rectified images is based on gaussian pyramids. A coarse disparity was first calculated using the top scale of the gaussian pyramid (the smallest image). The disparities were then iteratively corrected to increase precision when moving down through the scales in the gaussian pyramid, by doubling the disparities before adding them to the disparities calculated from the next scale. \\\\
+This way, we do not need to search the whole horizontal line, on which matching pixels can lie on, as we narrow down the place where we expect the pixels to be found, given the disparities in the previous scale (as in the scale above the current scale).\\\\
+The actual disparity in any given scale, was calculated based on the normalized cross-correlation. The first pixel with the highest normalized cross-correlation to the right of any given pixel was used as match for any pixel, that is, we have used one-way matching, not two-way matching. We have not made use of any corrections for the discontinuities in the disparities, as suggested in the assignment text (due to lack of time). \\\\
+We have not computed a full gaussian pyramid for the disparity calculations, but only uses up to 4 scales (as adviced in the assignment text), which might affect the calculations of the disparity, as we do not start at the smallest scale possible.
+
+\section{The implementation}
+We have used some built-in methods for essential parts of the program. First up, we used Matlab's \texttt{impyramid} method in order to create the different scales of the gaussian pyramid. This function applies a slight blur to the image (something similar to a gaussian blur), then downsizes the image to half height and width.\\\\
+Secondly, we used Matlab's \texttt{normxcorr2} method for calculating the normalized cross-correlation between a template and a horizontal fragment of the target image - the search area. Unfortunately, this was an unwise decision, as it also calculates all horizontal correlations (i.e. having the template partially above or below the center line of the search area). This uses up a large, and completely unnecessary, amount of computing power.\\\\
+Ignoring that, our program works by taking any pre-calculated disparities (from higher scale levels in the gaussian pyramid), and using corresponding disparities for a given pixel to determine where to center the search area. Once a search area is chosen, we use the normalized cross-correlation function to determine which pixel on the same horizontal line is the best match, using a patch around the original pixel location as template. The difference between the original location and the best matching pixel is then recorded as the disparity for that pixel.\\\\
+The cross-correlation function also compares the patch with the search area such that the patch only partially overlaps with the search area (at the edges). We have chosen to ignore such comparisons, as they may have a very high correlation, but are obviously wrong (according to tests that we made). Therefore the disparities near the left edge of the image are all zero; Which also makes some sense, as we in truth do not know what would lie outside of the image.
+
+\section{Testing and results}
+
+\subsection{Methods}
+We spent a lot of time debugging our code; The most effective ways that we tested our implementation was by using small fragments of pictures shifted a couple of pixels. That way we knew what the expected result should be, and was able to verify if the code worked as intended.\\\\
+Once we had working code up and running, we used the sample images to optimize our methods to get better results. Some of these optmizations included tweaking the search area for the cross-correlation and discarding the parts of the search area on the left side of the template (see description in previous section for details).\\\\
+When we had implemented our optimizations we performed a parameter test; That is, we varied the template size, and the number of scales used. Results are shown in the next section.
+
+\subsection{Results}
+\begin{figure}[H]
+\centering
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity_s1_k5.png}
+	\caption{Template size = 5, 1 scale.}
+\end{subfigure}
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity_s1_k7.png}
+	\caption{Template size = 7, 1 scale.}
+\end{subfigure}
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity_s1_k9.png}
+	\caption{Template size = 9, 1 scale.}
+\end{subfigure}
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity_s1_k11.png}
+	\caption{Template size = 11, 1 scale.}
+\end{subfigure}
+\end{figure}
+\begin{figure}[H]
+\ContinuedFloat
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity_s2_k5.png}
+	\caption{Template size = 5, 2 scales.}
+\end{subfigure}
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity_s2_k7.png}
+	\caption{Template size = 7, 2 scales.}
+\end{subfigure}
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity_s2_k9.png}
+	\caption{Template size = 9, 2 scales.}
+\end{subfigure}
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity_s2_k11.png}
+	\caption{Template size = 11, 2 scales.}
+\end{subfigure}
+\end{figure}
+\begin{figure}[H]
+\ContinuedFloat
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity_s3_k5.png}
+	\caption{Template size = 5, 3 scales.}
+\end{subfigure}
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity_s3_k7.png}
+	\caption{Template size = 7, 3 scales.}
+\end{subfigure}
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity_s3_k9.png}
+	\caption{Template size = 9, 3 scales.}
+\end{subfigure}
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity_s3_k11.png}
+	\caption{Template size = 11, 3 scales.}
+\end{subfigure}
+\end{figure}
+\begin{figure}[H]
+\ContinuedFloat
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity_s4_k5.png}
+	\caption{Template size = 5, 4 scales.}
+\end{subfigure}
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity_s4_k7.png}
+	\caption{Template size = 7, 4 scales.}
+\end{subfigure}
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity_s4_k9.png}
+	\caption{Template size = 9, 4 scales.}
+\end{subfigure}
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity_s4_k11.png}
+	\caption{Template size = 11, 4 scales.}
+\end{subfigure}
+\caption{Disparities calculated by varying the number of used scales from the gaussian pyramid and template size.}
+\label{fig:disparities}
+\end{figure}
+
+In figure \ref{fig:disparities} we see the resulting disparity images for different numbers of scale levels and kernel sizes. There are a few things to take away from this: Template size means a lot for the quality of the result. With the lower size templates, there are a lot of "holes". This could be due to the search area being scaled according to the template size; A deliberate choice, but in retrospect it may have been better to choose a fixed size for the search area across all templates, the reason being that smaller templates may result in such a narrow search area that the true match is outside of the search area and thus not able to be matched correctly.\\\\
+Then one would expect that any additional scale levels would "fix" the issue - However this does not seem to be the case when looking at the difference between scales levels 3 and 4 with template size 5. There is only a slight difference and that is on the lamp. It makes sense that there would be a difference there, as it is the part of the image that changes the most.\\\\
+\iffalse
+{\color{red} It is pretty obvoius when looking at the lower level disparities in figure \ref{fig:lowlevel}:
+\begin{figure}[H]
+\centering
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity1.png}
+	\caption{Scale level 1.}
+\end{subfigure}
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity2.png}
+	\caption{Scale level 2.}
+\end{subfigure}
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity3.png}
+	\caption{Scale level 3.}
+\end{subfigure}
+\begin{subfigure}[b]{0.24\textwidth}
+	\includegraphics[width=\textwidth]{disparity4.png}
+	\caption{Scale level 4.}
+\end{subfigure}
+\caption{The disparity of different scales (using kernel size 7). Higher resolution scales are based on lower resolution scales.}
+\label{fig:lowlevel}
+\end{figure}
+While the disparity images in figure \ref{fig:lowlevel} are for template size 7, and not 5, it still shows why adding the last scale added quality to the lamp area, but why the rest of the image (for kernel size 5) is still not filled out is puzzling.}
+\fi
+Another fact we see from the tests is that larger templates improve quality (probably with diminishing returns); However, increased template size also means more computation - Especially in our implementation where search area scales with the template size and because of our use of \texttt{normxcorr2}. It also means higher risk of false positive matchings and more errors at the boundary of objects due to stronger occlusion effects.\\\\
+\iffalse
+{\color{red}
+Lastly, adding a level of scale only add benefits to a certain level; In most cases we see little to no improvement in quality when adding the fourth scale. Maybe with an even smaller search area, extra scale levels would make sense, but they are already fairly small. }
+\fi
+
+For data-sets "venus" and "map" we performed the same tests. They verified what we have already seen and commented on for the "Tsukaba" data-set; Larger kernel sizes and more scale-levels generally improve the resulting disparity, at the cost of much more computation. The following images show the best results for the "map", "venus" and "tsukaba" data-sets:
+
+\begin{subfigure}[b]{0.32\textwidth}
+	\includegraphics[width=\textwidth]{disparity_s4_k11set_1.png}
+	\caption{Tsukaba}
+\end{subfigure}
+\begin{subfigure}[b]{0.32\textwidth}
+	\includegraphics[width=\textwidth]{disparity_s4_k11set_2.png}
+	\caption{Venus}
+\end{subfigure}
+\begin{subfigure}[b]{0.32\textwidth}
+	\includegraphics[width=\textwidth]{disparity_s4_k11set_3.png}
+	\caption{Map}
+\end{subfigure}
+\caption{The best disparities for the three data-sets. All three use kernel size 11, and 4 scale spaces.}
+\label{fig:lowlevel}
+\end{figure}
+
+We see pretty acceptable results for all three data-sets. 
+
+
+\begin{table}[H]
+	\centering
+	\begin{subtable}{1\textwidth}
 		\centering
 		\begin{subfigure}[b]{0.24\textwidth}
 			\includegraphics[width=\textwidth]{disparity_s1_k5set_1.png}
