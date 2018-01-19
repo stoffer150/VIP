@@ -1,13 +1,19 @@
 close all
 clear
 
-first_ims = {'tsukuba/scene1.row3.col1.ppm','venus/im0.ppm','map/im1.pgm'};
-second_ims = {'tsukuba/scene1.row3.col3.ppm','venus/im2.ppm','map/im0.pgm'};
+first_ims = {'tsukuba/scene1.row3.col1.ppm','venus/im2.ppm','map/im1.pgm'};
+second_ims = {'tsukuba/scene1.row3.col3.ppm','venus/im0.ppm','map/im0.pgm'};
 true_disps = {'tsukuba/truedisp.row3.col3.pgm','venus/disp2.pgm','map/disp0.pgm'};
 
 for i = 1:3
+    
     first_im = imread(first_ims{i});
     second_im = imread(second_ims{i});
+    
+    if size(first_im, 3) > 1
+        first_im = rgb2gray(imread(first_ims{i}));
+        second_im = rgb2gray(imread(second_ims{i}));
+    end
 
     first_im = imgaussfilt(first_im, 0.01);
     second_im = imgaussfilt(second_im, 0.01);
