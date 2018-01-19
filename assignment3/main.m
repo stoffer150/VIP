@@ -3,11 +3,11 @@ clear
 
 first_ims = {'tsukuba/scene1.row3.col1.ppm','venus/im0.ppm','map/im0.pgm'};
 second_ims = {'tsukuba/scene1.row3.col3.ppm','venus/im2.ppm','map/im1.pgm'};
-true_disps = {'tsukuba/truedisp.row3.col3.pgm','venus/disp2.pgm','disp1.pgm'};
+true_disps = {'tsukuba/truedisp.row3.col3.pgm','venus/disp2.pgm','map/disp1.pgm'};
 
 for i = 1:3
-    first_im = rgb2gray(imread(first_ims(i)));
-    second_im = rgb2gray(imread(second_ims(i)));
+    first_im = imread(first_ims{i});
+    second_im = imread(second_ims{i});
 
     first_im = imgaussfilt(first_im, 0.01);
     second_im = imgaussfilt(second_im, 0.01);
@@ -47,26 +47,25 @@ for i = 1:3
                     disparities{s, (k-5) / 2 + 1, level} = ...
                         calc_disp(im1, im2, [k, k]);
                 end
-                
+
                 if level == 1
                     disparity = disparities{s, (k-5) / 2 + 1, 1};
                     disparity = disparity - min(disparity(:));
-                    disparity = uint8(double(disparity) ./ double(max(disparity(:))) * 255);
-                    imwrite(disparity, ['disparity_s', int2str(s), '_k', int2str(k), '.png']);
+                    disparity = double(disparity) ./ double(max(disparity(:))) * 255;
+                    imwrite(disparity, ['disparity_s', int2str(s), '_k', int2str(k), 'set_', num2str(i), '.png']);
                 end
             end
         end
     end
 
-    gt_disp = imread(true_disps(i));
-    gt_disp = imadjust(gt_disp);
+    gt_disp = imread(true_disps{i});
 
     disp('Calculating statistics...')
     for n = num_scales:-1:1
         disparity = disparities{num_scales, 2, n, 1};
         disparity = disparity - min(disparity(:));
-        disparity = uint8(double(disparity) ./ double(max(disparity(:))) * 255);
-        imwrite(disparity, ['disparity', int2str(n), '.png']);
+        disparity = double(disparity) ./ double(max(disparity(:))) * 255;
+        imwrite(disparity, ['disparity', int2str(n), 'set_', num2str(i), '.png']);
         figure();
         imshow(disparity);
     end
@@ -74,10 +73,14 @@ for i = 1:3
     disp('Calculating...')
     for k = 5:2:11
         for s = 1:4
-            dispar = double(imadjust(disparities{s, (k-5) / 2 + 1,1}));
+            if i == 1
+                dispar = double(8*(disparities{s, (k-5) / 2 + 1,1}));
+            else
+                dispar = double((disparities{s, (k-5) / 2 + 1,1}));
+            end
             disp(strcat('k = ',num2str(k), ', scales used = ',num2str(s)))
             err = abs(double(gt_disp) - dispar);
-            %imwrite(err, ['err_s', int2str(s), '_k', int2str(k), '.png']);
+            imwrite(err, ['err_s', int2str(s), '_k', int2str(k), 'set_', num2str(i), '.png']);
             err = err(:);
 
             mean_err = mean(err);
