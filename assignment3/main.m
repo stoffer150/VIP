@@ -1,9 +1,9 @@
 close all
 clear
 
-first_ims = {'tsukuba/scene1.row3.col1.ppm','venus/im0.ppm','map/im0.pgm'};
-second_ims = {'tsukuba/scene1.row3.col3.ppm','venus/im2.ppm','map/im1.pgm'};
-true_disps = {'tsukuba/truedisp.row3.col3.pgm','venus/disp2.pgm','map/disp1.pgm'};
+first_ims = {'tsukuba/scene1.row3.col1.ppm','venus/im0.ppm','map/im1.pgm'};
+second_ims = {'tsukuba/scene1.row3.col3.ppm','venus/im2.ppm','map/im0.pgm'};
+true_disps = {'tsukuba/truedisp.row3.col3.pgm','venus/disp2.pgm','map/disp0.pgm'};
 
 for i = 1:3
     first_im = imread(first_ims{i});
@@ -52,7 +52,7 @@ for i = 1:3
                     disparity = disparities{s, (k-5) / 2 + 1, 1};
                     disparity = disparity - min(disparity(:));
                     disparity = double(disparity) ./ double(max(disparity(:))) * 255;
-                    imwrite(disparity, ['disparity_s', int2str(s), '_k', int2str(k), 'set_', num2str(i), '.png']);
+                    imwrite(uint8(disparity), ['disparity_s', int2str(s), '_k', int2str(k), 'set_', num2str(i), '.png']);
                 end
             end
         end
@@ -65,7 +65,7 @@ for i = 1:3
         disparity = disparities{num_scales, 2, n, 1};
         disparity = disparity - min(disparity(:));
         disparity = double(disparity) ./ double(max(disparity(:))) * 255;
-        imwrite(disparity, ['disparity', int2str(n), 'set_', num2str(i), '.png']);
+        imwrite(uint8(disparity), ['disparity', int2str(n), 'set_', num2str(i), '.png']);
         figure();
         imshow(disparity);
     end
