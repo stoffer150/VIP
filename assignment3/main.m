@@ -1,8 +1,8 @@
 close all
 clear
 
-first_ims = {'tsukuba/scene1.row3.col1.ppm','venus/im0.ppm','map/im1.pgm'};
-second_ims = {'tsukuba/scene1.row3.col3.ppm','venus/im2.ppm','map/im0.pgm'};
+first_ims = {'tsukuba/scene1.row3.col1.ppm','venus/im0.ppm','map/im0.pgm'};
+second_ims = {'tsukuba/scene1.row3.col3.ppm','venus/im2.ppm','map/im1.pgm'};
 true_disps = {'tsukuba/truedisp.row3.col3.pgm','venus/disp2.pgm','map/disp0.pgm'};
 
 for i = 1:3
@@ -67,7 +67,7 @@ for i = 1:3
         disparity = double(disparity) ./ double(max(disparity(:))) * 255;
         imwrite(uint8(disparity), ['disparity', int2str(n), 'set_', num2str(i), '.png']);
         figure();
-        imshow(disparity);
+        imshow(disparity,[]);
     end
 
     disp('Calculating...')
