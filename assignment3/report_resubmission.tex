@@ -148,21 +148,21 @@ For data-sets "venus" and "map" we performed the same tests. They verified what 
 \begin{figure}[H]
 \begin{subfigure}[b]{0.32\textwidth}
 	\includegraphics[width=\textwidth]{disparity_s4_k11set_1.png}
-	\caption{Tsukaba}
+	\caption{"Tsukaba" data set.}
 \end{subfigure}
 \begin{subfigure}[b]{0.32\textwidth}
 	\includegraphics[width=\textwidth]{disparity_s4_k11set_2.png}
-	\caption{Venus}
+	\caption{"Venus" data set.}
 \end{subfigure}
 \begin{subfigure}[b]{0.32\textwidth}
 	\includegraphics[width=\textwidth]{disparity_s4_k11set_3.png}
-	\caption{Map}
+	\caption{"Map" data set.}
 \end{subfigure}
-\caption{The best disparities for the three data-sets. All three use kernel size 11, and 4 scale spaces.}
+\caption{The best disparities for all three data-sets. All three use kernel size 11, and 4 scale spaces.}
 \label{fig:lowlevel}
 \end{figure}
 
-We see acceptable results for all three data-sets. \iffalse RES HERE? \fi
+We see acceptable results for all three data-sets, even though the disparity images obviously shows large errors on the boudnaries of objects and at the border of the images.\\\\ In table \ref{tab:numeval} we see a numerical evaluation of our results, for varying number of scale levels and template sizes. From the tables we can see that for all number of scale levels the mean error goes down when the template size goes up. This is sound, since small patches are more likely to match many places in the image, because of the simple structure. Larger patches have a more complex structure, and thus are more difficult to match (and thus more difficult to match wrongly). Number of scale levels also seem to have a great impact on the mean error.\\\\ The standard deviation of the error does not seem to depend greatly on the template size, but still there is a slight tendency for the standard deviation to become smaller when the number of scales goes up.\\\\ For few scale levels we seem to get fewer large errors when the template size is small, but as soon as we have more than 2 levels, we also need larger templates. We get the overall best results when we use 4 scales levels.
 
 \begin{table}[H]
 	\centering
@@ -213,10 +213,8 @@ We see acceptable results for all three data-sets. \iffalse RES HERE? \fi
 	\caption{Numerical evaluation of results for the "Tsukuba" data set.}
 	\label{tab:numeval}
 \end{table}
-In table \ref{tab:numeval} we see a numerical evaluation of our results, for varying number of scale levels and template sizes. From the tables we can see that for all number of scale levels the mean error goes down when the template size goes up. This is sound, since small patches are more likely to match many places in the image, because of the simple structure. Larger patches have a more complex structure, and thus are more difficult to match (and thus more difficult to match wrongly). Number of scale levels also seem to have a great impact on the mean error.\\\\
-The standard deviation of the error does not seem to depend greatly on the template size, but still there is a slight tendency for the standard deviation to become smaller when the number of scales goes up.\\\\
-For few scale levels we seem to get fewer large errors when the template size is small, but as soon as we have more than 2 levels, we also need larger templates. We get the overall best results when we use 4 scales levels. \\\\
-Figure \ref{fig:error} visualize the difference in the ground truth and the calculated disparities, for different template sizes and 4 scale levels. As suspected we get the most errors for kernel size 5, after which the errors gradually disappears. Looking at figure \ref{fig:error}d, which we read from the tables to be the combination with least large errors, we see that most of the errors that we get are around the objects, namely pixels becoming obscured or cease being obscured. We also see large errors on the borders, which in the ground truth image have been manually set to 0. We have not done so, hence the errors on the borders.
+
+Figure \ref{fig:error} visualize the difference in the ground truth and the calculated disparities for the "Tsukuba" data set, for different template sizes and 4 scale levels. As suspected we get the most errors for kernel size 5, after which the errors gradually disappears. Looking at figure \ref{fig:error}d, which we read from the tables to be the combination with least large errors, we see that most of the errors that we get are from the borders of the objects, namely pixels becoming obscured or cease being obscured. We also see large errors on the borders, which in the ground truth image have been manually set to 0. We have not done so, hence the errors on the borders.
 
 \begin{figure}[H]
 	\centering
@@ -247,6 +245,6 @@ Figure \ref{fig:error} visualize the difference in the ground truth and the calc
 Looking at figure \ref{fig:disparities}p, again the disparity calculation which we read from the tables to be our most successful result, we see that we got most of it right. Form our calculations the lamp is closest to us, following part of the bust's face, the rest of the bust, the table and everything on it, then the camera and lastly the bookcase in the background. This is exactly the order we see in the ground truth image, though our edges are not quite as smooth, and as we already mentioned we have a problem with the discontinuities("holes"). However we are still able to recognize the shapes of the objects in the image. 
 
 \subsection{Remark on results}
-Part of the reason why we get so many errors might be because the values of the ground truth and our calculations might be scaled differently. We used \texttt{scene1.row3.col1.ppm} and \texttt{scene1.row3.col3.ppm} for computing the disparities. The ground truth image indicates that they have used \texttt{scene1.row3.col3.ppm} together with some other (not stated) image, so we might have used a different image set than used for creating the ground truth image. Despite the errors, we believe overall that we have successfully provided depth information that mostly consists with what we see in the ground truth image.
+Part of the reason why we get so many errors might be because the values of the ground truth and our calculations could be scaled differently. As the TAs noticed, the ground truth for the "Tsukuba" data set was scaled by a factor of 8, which we also did. For the other data sets, we have not scaled the disparities before doing statistics (it seems like the ground truth for the other data sets have also been scaled by some unknown factor), and we suspect this to be the reason that we get much bigger errors on the other data sets. \\\\ For the "Tsukuba" data set, we used \texttt{scene1.row3.col1.ppm} and \texttt{scene1.row3.col3.ppm} for computing the disparities. The ground truth image indicates that they have used \texttt{scene1.row3.col3.ppm} together with some other (not stated) image, so we might have used a different image set than used for creating the ground truth image, as well. Same goes for the other data sets. Despite the errors, we believe overall that we have successfully provided depth information that mostly consists with what we see in the ground truth image.
 	
 \end{document}
