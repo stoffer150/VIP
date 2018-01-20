@@ -242,7 +242,7 @@ Figure \ref{fig:error} visualize the difference in the ground truth and the calc
 	\label{fig:error}
 \end{figure}
 
-Looking at figure \ref{fig:disparities}p, again the disparity calculation which we read from the tables to be our most successful result, we see that we got most of it right. Form our calculations the lamp is closest to us, following part of the bust's face, the rest of the bust, the table and everything on it, then the camera and lastly the bookcase in the background. This is exactly the order we see in the ground truth image, though our edges are not quite as smooth, and as we already mentioned we have a problem with the discontinuities("holes"). However we are still able to recognize the shapes of the objects in the image. \\\\ Table \ref{tab:numevalAll} shows the statistical results for all three data sets using all 4 scales for template size 11 (from the statistics, we have seen that this is the settings that yields the best results). As can be seen, we obtain a lot more errors for the other data sets, this we suspect is due to no scaling of the disparities, see next section for details. 
+Looking at figure \ref{fig:disparities}p, again the disparity calculation which we read from the tables to be our most successful result, we see that we got most of it right. Form our calculations the lamp is closest to us, following part of the bust's face, the rest of the bust, the table and everything on it, then the camera and lastly the bookcase in the background. This is exactly the order we see in the ground truth image, though our edges are not quite as smooth, and as we already mentioned we have a problem with the discontinuities("holes"). However we are still able to recognize the shapes of the objects in the image. \\\\ Table \ref{tab:numevalAll} shows the statistical results for all three data sets using all 4 scales for template size 11. From the statistics, we have seen that this is the settings that yields the best results. The full statistics (not shown here due to lack of space) shows the same tendencies as the full statistics that we showed for the "Tsukuba" data set. As can be seen in table \ref{tab:numevalAll}, we obtain a lot more errors for the other data sets, this we suspect is due to no scaling of the disparities, see next section for details. 
 
 \begin{table}[H]
 	\centering
@@ -253,7 +253,7 @@ Looking at figure \ref{fig:disparities}p, again the disparity calculation which 
 		\# large errors & 100257 & 166222 & 61243 \\\hline
 		Fraction of large errors& 0.907 & 1 & 0.998
 	\end{tabular}
-	\caption{Numerical evaluation of the 3 data sets for template size 11 and 4 scale levels.}
+	\caption{Numerical evaluation of all 3 data sets for template size 11 and 4 scale levels.}
 	\label{tab:numevalAll}
 \end{table}
 
