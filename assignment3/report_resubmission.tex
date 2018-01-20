@@ -137,43 +137,14 @@ When we had implemented our optimizations we performed a parameter test; That is
 	\includegraphics[width=\textwidth]{disparity_s4_k11set_1.png}
 	\caption{Template size = 11, 4 scales.}
 \end{subfigure}
-\caption{Disparities calculated by varying the number of used scales from the gaussian pyramid and template size.}
+\caption{Disparities calculated by varying the number of used scales from the gaussian pyramid and template size. The shown results are from the data set "Tsukuba".}
 \label{fig:disparities}
 \end{figure}
 
 In figure \ref{fig:disparities} we see the resulting disparity images for different numbers of scale levels and kernel sizes. There are a few things to take away from this: Template size means a lot for the quality of the result. With the lower size templates, there are a lot of "holes". This could be due to the search area being scaled according to the template size; A deliberate choice, but in retrospect it may have been better to choose a fixed size for the search area across all templates, the reason being that smaller templates may result in such a narrow search area that the true match is outside of the search area and thus not able to be matched correctly.\\\\
 Then one would expect that any additional scale levels would "fix" the issue - However this does not seem to be the case when looking at the difference between scales levels 3 and 4 with template size 5. There is only a slight difference and that is on the lamp. It makes sense that there would be a difference there, as it is the part of the image that changes the most.\\\\
-\iffalse
-{\color{red} It is pretty obvoius when looking at the lower level disparities in figure \ref{fig:lowlevel}:
-\begin{figure}[H]
-\centering
-\begin{subfigure}[b]{0.24\textwidth}
-	\includegraphics[width=\textwidth]{disparity1.png}
-	\caption{Scale level 1.}
-\end{subfigure}
-\begin{subfigure}[b]{0.24\textwidth}
-	\includegraphics[width=\textwidth]{disparity2.png}
-	\caption{Scale level 2.}
-\end{subfigure}
-\begin{subfigure}[b]{0.24\textwidth}
-	\includegraphics[width=\textwidth]{disparity3.png}
-	\caption{Scale level 3.}
-\end{subfigure}
-\begin{subfigure}[b]{0.24\textwidth}
-	\includegraphics[width=\textwidth]{disparity4.png}
-	\caption{Scale level 4.}
-\end{subfigure}
-\caption{The disparity of different scales (using kernel size 7). Higher resolution scales are based on lower resolution scales.}
-\label{fig:lowlevel}
-\end{figure}
-While the disparity images in figure \ref{fig:lowlevel} are for template size 7, and not 5, it still shows why adding the last scale added quality to the lamp area, but why the rest of the image (for kernel size 5) is still not filled out is puzzling.}
-\fi
 Another fact we see from the tests is that larger templates improve quality (probably with diminishing returns); However, increased template size also means more computation - Especially in our implementation where search area scales with the template size and because of our use of \texttt{normxcorr2}. It also means higher risk of false positive matchings and more errors at the boundary of objects due to stronger occlusion effects.\\\\
-\iffalse
-{\color{red}
-Lastly, adding a level of scale only add benefits to a certain level; In most cases we see little to no improvement in quality when adding the fourth scale. Maybe with an even smaller search area, extra scale levels would make sense, but they are already fairly small. }
-\fi
-For data-sets "venus" and "map" we performed the same tests. They verified what we have already seen and commented on for the "Tsukaba" data-set; Larger kernel sizes and more scale-levels generally improve the resulting disparity, at the cost of much more computation. The following images show the best results for the "map", "venus" and "tsukaba" data-sets:
+For data-sets "venus" and "map" we performed the same tests. They verified what we have already seen and commented on for the "Tsukaba" data-set; Larger kernel sizes and more scale-levels generally improve the resulting disparity, at the cost of much more computations. The following images show the best results for the "map", "venus" and "tsukaba" data-sets:
 \begin{figure}[H]
 \begin{subfigure}[b]{0.32\textwidth}
 	\includegraphics[width=\textwidth]{disparity_s4_k11set_1.png}
@@ -191,38 +162,7 @@ For data-sets "venus" and "map" we performed the same tests. They verified what 
 \label{fig:lowlevel}
 \end{figure}
 
-We see pretty acceptable results for all three data-sets. 
-	
-
-\iffalse
-{\color{red} It is pretty obvoius when looking at the lower level disparities in figure \ref{fig:lowlevel}:
-	\begin{figure}[H]
-		\centering
-		\begin{subfigure}[b]{0.24\textwidth}
-			\includegraphics[width=\textwidth]{disparity1set_1.png}
-			\caption{Scale level 1.}
-		\end{subfigure}
-		\begin{subfigure}[b]{0.24\textwidth}
-			\includegraphics[width=\textwidth]{disparity2set_1.png}
-			\caption{Scale level 2.}
-		\end{subfigure}
-		\begin{subfigure}[b]{0.24\textwidth}
-			\includegraphics[width=\textwidth]{disparity3set_1.png}
-			\caption{Scale level 3.}
-		\end{subfigure}
-		\begin{subfigure}[b]{0.24\textwidth}
-			\includegraphics[width=\textwidth]{disparity4set_1.png}
-			\caption{Scale level 4.}
-		\end{subfigure}
-		\caption{The disparity of different scales (using kernel size 7). Higher resolution scales are based on lower resolution scales.}
-		\label{fig:lowlevel}
-	\end{figure}
-	While the disparity images in figure \ref{fig:lowlevel} are for template size 7, and not 5, it still shows why adding the last scale added quality to the lamp area, but why the rest of the image (for kernel size 5) is still not filled out is puzzling.}
-\fi
-\iffalse
-{\color{red}
-	Lastly, adding a level of scale only add benefits to a certain level; In most cases we see little to no improvement in quality when adding the fourth scale. Maybe with an even smaller search area, extra scale levels would make sense, but they are already fairly small. }
-\fi
+We see acceptable results for all three data-sets. \iffalse RES HERE? \fi
 
 \begin{table}[H]
 	\centering
@@ -270,7 +210,7 @@ We see pretty acceptable results for all three data-sets.
 		\end{tabular}
 		\caption{Calculated with 4 scale levels.}
 	\end{subtable}
-	\caption{Numerical evaluation of results}
+	\caption{Numerical evaluation of results for the "Tsukuba" data set.}
 	\label{tab:numeval}
 \end{table}
 In table \ref{tab:numeval} we see a numerical evaluation of our results, for varying number of scale levels and template sizes. From the tables we can see that for all number of scale levels the mean error goes down when the template size goes up. This is sound, since small patches are more likely to match many places in the image, because of the simple structure. Larger patches have a more complex structure, and thus are more difficult to match (and thus more difficult to match wrongly). Number of scale levels also seem to have a great impact on the mean error.\\\\
